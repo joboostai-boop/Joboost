@@ -215,9 +215,8 @@ class JoboostAPITester:
             self.run_test(
                 "Update Application Status",
                 "PATCH",
-                f"applications/{app_id}/status",
-                200,
-                data="interview"
+                f"applications/{app_id}/status?status=interview",
+                200
             )
             
             # Test DELETE application
