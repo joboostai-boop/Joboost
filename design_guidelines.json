@@ -1,0 +1,186 @@
+{
+  "identity": {
+    "name": "Joboost",
+    "description": "A professional, high-end Career CRM for the French market. Reassuring, ultra-organized, and production-ready.",
+    "values": [
+      "Clarity over clutter",
+      "Professionalism",
+      "Methodical organization",
+      "Focus and calm"
+    ],
+    "tone": "Studious, Professional, Reassuring, Efficient",
+    "target_audience": "French job seekers, professionals in transition, fresh graduates."
+  },
+  "typography": {
+    "fonts": {
+      "headings": {
+        "family": "Plus Jakarta Sans, sans-serif",
+        "weights": ["600", "700"],
+        "usage": "Main headings, section titles, hero text."
+      },
+      "body": {
+        "family": "Manrope, sans-serif",
+        "weights": ["400", "500", "600"],
+        "usage": "General UI text, descriptions, form labels."
+      },
+      "focus_mode": {
+        "family": "Libre Baskerville, serif",
+        "weights": ["400", "700"],
+        "usage": "CV and Cover Letter editing content ONLY."
+      },
+      "monospace": {
+        "family": "JetBrains Mono, monospace",
+        "weights": ["400"],
+        "usage": "Code snippets, technical data, IDs."
+      }
+    },
+    "scale": {
+      "h1": "text-4xl md:text-5xl font-bold tracking-tight",
+      "h2": "text-3xl font-semibold tracking-tight",
+      "h3": "text-2xl font-semibold tracking-tight",
+      "h4": "text-xl font-semibold",
+      "body_lg": "text-lg leading-relaxed",
+      "body_base": "text-base leading-relaxed",
+      "body_sm": "text-sm leading-relaxed text-slate-500",
+      "caption": "text-xs font-medium uppercase tracking-wider text-slate-400"
+    }
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "DEFAULT": "#0F172A",
+        "foreground": "#FFFFFF",
+        "tailwind": "bg-slate-900 text-white"
+      },
+      "secondary": {
+        "DEFAULT": "#0EA5E9",
+        "foreground": "#FFFFFF",
+        "tailwind": "bg-sky-500 text-white"
+      },
+      "success": {
+        "DEFAULT": "#059669",
+        "foreground": "#FFFFFF",
+        "tailwind": "bg-emerald-600 text-white"
+      },
+      "warning": {
+        "DEFAULT": "#D97706",
+        "foreground": "#FFFFFF",
+        "tailwind": "bg-amber-600 text-white"
+      },
+      "background": {
+        "DEFAULT": "#FFFFFF",
+        "tailwind": "bg-white"
+      },
+      "surface": {
+        "DEFAULT": "#F8FAFC",
+        "tailwind": "bg-slate-50"
+      },
+      "border": {
+        "DEFAULT": "#E2E8F0",
+        "tailwind": "border-slate-200"
+      },
+      "muted": {
+        "DEFAULT": "#64748B",
+        "tailwind": "text-slate-500"
+      }
+    },
+    "usage_rules": {
+      "gradients": "AVOID gradients for backgrounds. Use solid colors or subtle noise textures.",
+      "text_contrast": "Ensure WCAG AA compliance. Use slate-900 for main text, slate-500 for secondary.",
+      "interactive": "Hover states should darken/lighten by 10%. Focus rings must be visible (sky-500)."
+    }
+  },
+  "layout": {
+    "grid_system": {
+      "marketing": "Bento grid style. Asymmetric columns (e.g., col-span-8 + col-span-4).",
+      "dashboard": "Fluid grid with collapsible sidebar. Main content area uses max-w-7xl mx-auto.",
+      "kanban": "Horizontal scrolling container with fixed-width columns (w-80)."
+    },
+    "spacing": {
+      "container_padding": "px-4 md:px-8 lg:px-12",
+      "section_gap": "gap-8 md:gap-12 lg:gap-16",
+      "component_gap": "gap-4"
+    },
+    "containers": {
+      "card": "bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow",
+      "modal": "bg-white rounded-xl shadow-2xl border border-slate-100 max-w-2xl w-full",
+      "sidebar": "w-64 bg-slate-50 border-r border-slate-200 h-screen sticky top-0"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-slate-900 text-white hover:bg-slate-800 rounded-md px-6 py-2.5 font-medium transition-all active:scale-95",
+      "secondary": "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 rounded-md px-6 py-2.5 font-medium transition-all active:scale-95",
+      "ghost": "text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-md px-4 py-2 transition-colors",
+      "destructive": "bg-red-50 text-red-600 hover:bg-red-100 rounded-md px-6 py-2.5 font-medium"
+    },
+    "inputs": {
+      "default": "h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+      "focus_mode": "border-none shadow-none text-lg bg-transparent focus:ring-0 placeholder:text-slate-300 font-serif"
+    },
+    "cards": {
+      "job_card": "group relative flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md hover:border-sky-200 cursor-grab active:cursor-grabbing",
+      "stat_card": "rounded-xl border border-slate-100 bg-white p-6 shadow-sm"
+    },
+    "badges": {
+      "default": "inline-flex items-center rounded-full border border-slate-200 px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-slate-900",
+      "status_applied": "bg-blue-50 text-blue-700 border-blue-200",
+      "status_interview": "bg-amber-50 text-amber-700 border-amber-200",
+      "status_offer": "bg-emerald-50 text-emerald-700 border-emerald-200",
+      "status_rejected": "bg-slate-100 text-slate-600 border-slate-200"
+    }
+  },
+  "assets": {
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5px or 2px. Consistent sizing (w-4 h-4 for small, w-5 h-5 for default)."
+    },
+    "images": {
+      "hero_background": "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "team_social_proof": "https://images.unsplash.com/photo-1622676614630-a9109126264a?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "placeholder_logo": "https://via.placeholder.com/40"
+    }
+  },
+  "motion": {
+    "transitions": {
+      "default": "transition-all duration-200 ease-in-out",
+      "slow": "transition-all duration-500 ease-out",
+      "page": "initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}"
+    },
+    "interactions": {
+      "hover_lift": "hover:-translate-y-1 hover:shadow-lg",
+      "active_press": "active:scale-95"
+    }
+  },
+  "universal_guidelines": {
+    "general": [
+      "Do not use gradients for backgrounds. Stick to solid white or slate-50.",
+      "Use 'Inter' or 'Manrope' for body text, 'Plus Jakarta Sans' for headings.",
+      "Ensure all interactive elements have a data-testid attribute.",
+      "Use 'sonner' for toast notifications.",
+      "Prioritize 'lucide-react' for icons.",
+      "Mobile-first responsive design is mandatory.",
+      "Focus Mode must be distraction-free: remove sidebar, header, and footer.",
+      "Use 'framer-motion' for smooth transitions, especially in the Kanban board."
+    ],
+    "accessibility": [
+      "Ensure text contrast ratio of at least 4.5:1.",
+      "All images must have alt text.",
+      "Focus states must be clearly visible."
+    ],
+    "code_style": [
+      "Use functional components with hooks.",
+      "Use Tailwind CSS for styling.",
+      "Keep components small and reusable.",
+      "Use named exports for components, default exports for pages."
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. Install necessary dependencies: `npm install lucide-react framer-motion sonner clsx tailwind-merge`.",
+    "2. Configure Tailwind theme to match the colors and fonts defined above.",
+    "3. Create the layout components (Sidebar, Header, FocusLayout).",
+    "4. Implement the 'Joboost' identity in the Landing Page.",
+    "5. Build the Dashboard with the Kanban board using 'dnd-kit' or similar if needed, or simple framer-motion drag.",
+    "6. Ensure the 'Focus Mode' uses the specific serif font and minimal layout."
+  ]
+}
