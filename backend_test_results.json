@@ -1,136 +1,136 @@
 {
   "summary": {
     "tests_run": 21,
-    "tests_passed": 20,
-    "success_rate": 95.23809523809523,
-    "timestamp": "2026-01-07T00:20:00.026216"
+    "tests_passed": 21,
+    "success_rate": 100.0,
+    "timestamp": "2026-01-07T00:20:13.280053"
   },
   "detailed_results": [
     {
       "test_name": "API Root",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:58.762226"
+      "timestamp": "2026-01-07T00:20:12.081223"
     },
     {
       "test_name": "Health Check",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:58.799145"
+      "timestamp": "2026-01-07T00:20:12.119565"
     },
     {
       "test_name": "User Registration",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.130928"
+      "timestamp": "2026-01-07T00:20:12.375340"
     },
     {
       "test_name": "Token Extraction",
       "success": true,
-      "details": "User ID: user_1137428819fb",
-      "timestamp": "2026-01-07T00:19:59.131592"
+      "details": "User ID: user_6fe90e885885",
+      "timestamp": "2026-01-07T00:20:12.375976"
     },
     {
       "test_name": "User Login",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.391316"
+      "timestamp": "2026-01-07T00:20:12.653180"
     },
     {
       "test_name": "Login Token Update",
       "success": true,
       "details": "",
-      "timestamp": "2026-01-07T00:19:59.391958"
+      "timestamp": "2026-01-07T00:20:12.653817"
     },
     {
       "test_name": "Get Current User",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.427464"
+      "timestamp": "2026-01-07T00:20:12.690837"
     },
     {
       "test_name": "Get Applications (Empty)",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.461696"
+      "timestamp": "2026-01-07T00:20:12.723810"
     },
     {
       "test_name": "Create Application",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.508381"
+      "timestamp": "2026-01-07T00:20:12.799148"
     },
     {
       "test_name": "Application ID Extraction",
       "success": true,
-      "details": "App ID: app_f58ac0586ec1",
-      "timestamp": "2026-01-07T00:19:59.508995"
+      "details": "App ID: app_f14d29b27347",
+      "timestamp": "2026-01-07T00:20:12.799793"
     },
     {
       "test_name": "Get Applications (With Data)",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.553039"
+      "timestamp": "2026-01-07T00:20:12.833221"
     },
     {
       "test_name": "Get Single Application",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.631516"
+      "timestamp": "2026-01-07T00:20:12.868165"
     },
     {
       "test_name": "Update Application",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.667350"
+      "timestamp": "2026-01-07T00:20:12.909158"
     },
     {
       "test_name": "Update Application Status",
-      "success": false,
-      "details": "Status: 422, Expected: 200, Response: {'detail': [{'type': 'missing', 'loc': ['query', 'status'], 'msg': 'Field required', 'input': None, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]}",
-      "timestamp": "2026-01-07T00:19:59.702295"
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:20:12.987045"
     },
     {
       "test_name": "Delete Application",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.743415"
+      "timestamp": "2026-01-07T00:20:13.064424"
     },
     {
       "test_name": "Get Profile (Empty)",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.777130"
+      "timestamp": "2026-01-07T00:20:13.100362"
     },
     {
       "test_name": "Create/Update Profile",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.829749"
+      "timestamp": "2026-01-07T00:20:13.139754"
     },
     {
       "test_name": "Get Profile (With Data)",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.910373"
+      "timestamp": "2026-01-07T00:20:13.178106"
     },
     {
       "test_name": "Get Stats",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:59.947727"
+      "timestamp": "2026-01-07T00:20:13.212224"
     },
     {
       "test_name": "Unauthorized Access",
       "success": true,
       "details": "Status: 401, Expected: 401",
-      "timestamp": "2026-01-07T00:19:59.986476"
+      "timestamp": "2026-01-07T00:20:13.244070"
     },
     {
       "test_name": "Invalid Application ID",
       "success": true,
       "details": "Status: 404, Expected: 404",
-      "timestamp": "2026-01-07T00:20:00.025274"
+      "timestamp": "2026-01-07T00:20:13.279114"
     }
   ]
 }
