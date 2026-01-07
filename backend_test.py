@@ -91,7 +91,7 @@ class JoboostAPITester:
         timestamp = datetime.now().strftime('%H%M%S')
         test_user = {
             "name": f"Test User {timestamp}",
-            "email": f"test{timestamp}@joboost.test",
+            "email": f"test{timestamp}@example.com",
             "password": "TestPass123!"
         }
         
