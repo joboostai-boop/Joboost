@@ -1,70 +1,136 @@
 {
   "summary": {
-    "tests_run": 10,
-    "tests_passed": 3,
-    "success_rate": 30.0,
-    "timestamp": "2026-01-07T00:19:47.591592"
+    "tests_run": 21,
+    "tests_passed": 20,
+    "success_rate": 95.23809523809523,
+    "timestamp": "2026-01-07T00:20:00.026216"
   },
   "detailed_results": [
     {
       "test_name": "API Root",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:47.453703"
+      "timestamp": "2026-01-07T00:19:58.762226"
     },
     {
       "test_name": "Health Check",
       "success": true,
       "details": "Status: 200, Expected: 200",
-      "timestamp": "2026-01-07T00:19:47.490582"
+      "timestamp": "2026-01-07T00:19:58.799145"
     },
     {
       "test_name": "User Registration",
-      "success": false,
-      "details": "Status: 422, Expected: 200, Response: {'detail': [{'type': 'value_error', 'loc': ['body', 'email'], 'msg': 'value is not a valid email address: The part after the @-sign is a special-use or reserved name that cannot be used with email.', 'input': 'test001947@joboost.test', 'ctx': {'reason': 'The part after the @-sign is a special-use or reserved name that cannot be used with email.'}}]}",
-      "timestamp": "2026-01-07T00:19:47.546986"
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.130928"
     },
     {
       "test_name": "Token Extraction",
-      "success": false,
-      "details": "No token in response",
-      "timestamp": "2026-01-07T00:19:47.547701"
+      "success": true,
+      "details": "User ID: user_1137428819fb",
+      "timestamp": "2026-01-07T00:19:59.131592"
     },
     {
-      "test_name": "Login Test",
-      "success": false,
-      "details": "No user data available",
-      "timestamp": "2026-01-07T00:19:47.547724"
+      "test_name": "User Login",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.391316"
     },
     {
-      "test_name": "Auth Me",
-      "success": false,
-      "details": "No token available",
-      "timestamp": "2026-01-07T00:19:47.547732"
+      "test_name": "Login Token Update",
+      "success": true,
+      "details": "",
+      "timestamp": "2026-01-07T00:19:59.391958"
     },
     {
-      "test_name": "Applications CRUD",
-      "success": false,
-      "details": "No token available",
-      "timestamp": "2026-01-07T00:19:47.547739"
+      "test_name": "Get Current User",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.427464"
     },
     {
-      "test_name": "Profile Operations",
-      "success": false,
-      "details": "No token available",
-      "timestamp": "2026-01-07T00:19:47.547747"
+      "test_name": "Get Applications (Empty)",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.461696"
     },
     {
-      "test_name": "Stats",
+      "test_name": "Create Application",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.508381"
+    },
+    {
+      "test_name": "Application ID Extraction",
+      "success": true,
+      "details": "App ID: app_f58ac0586ec1",
+      "timestamp": "2026-01-07T00:19:59.508995"
+    },
+    {
+      "test_name": "Get Applications (With Data)",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.553039"
+    },
+    {
+      "test_name": "Get Single Application",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.631516"
+    },
+    {
+      "test_name": "Update Application",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.667350"
+    },
+    {
+      "test_name": "Update Application Status",
       "success": false,
-      "details": "No token available",
-      "timestamp": "2026-01-07T00:19:47.547755"
+      "details": "Status: 422, Expected: 200, Response: {'detail': [{'type': 'missing', 'loc': ['query', 'status'], 'msg': 'Field required', 'input': None, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]}",
+      "timestamp": "2026-01-07T00:19:59.702295"
+    },
+    {
+      "test_name": "Delete Application",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.743415"
+    },
+    {
+      "test_name": "Get Profile (Empty)",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.777130"
+    },
+    {
+      "test_name": "Create/Update Profile",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.829749"
+    },
+    {
+      "test_name": "Get Profile (With Data)",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.910373"
+    },
+    {
+      "test_name": "Get Stats",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:59.947727"
     },
     {
       "test_name": "Unauthorized Access",
       "success": true,
       "details": "Status: 401, Expected: 401",
-      "timestamp": "2026-01-07T00:19:47.590663"
+      "timestamp": "2026-01-07T00:19:59.986476"
+    },
+    {
+      "test_name": "Invalid Application ID",
+      "success": true,
+      "details": "Status: 404, Expected: 404",
+      "timestamp": "2026-01-07T00:20:00.025274"
     }
   ]
 }
