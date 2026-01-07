@@ -1,0 +1,70 @@
+{
+  "summary": {
+    "tests_run": 10,
+    "tests_passed": 3,
+    "success_rate": 30.0,
+    "timestamp": "2026-01-07T00:19:47.591592"
+  },
+  "detailed_results": [
+    {
+      "test_name": "API Root",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:47.453703"
+    },
+    {
+      "test_name": "Health Check",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-07T00:19:47.490582"
+    },
+    {
+      "test_name": "User Registration",
+      "success": false,
+      "details": "Status: 422, Expected: 200, Response: {'detail': [{'type': 'value_error', 'loc': ['body', 'email'], 'msg': 'value is not a valid email address: The part after the @-sign is a special-use or reserved name that cannot be used with email.', 'input': 'test001947@joboost.test', 'ctx': {'reason': 'The part after the @-sign is a special-use or reserved name that cannot be used with email.'}}]}",
+      "timestamp": "2026-01-07T00:19:47.546986"
+    },
+    {
+      "test_name": "Token Extraction",
+      "success": false,
+      "details": "No token in response",
+      "timestamp": "2026-01-07T00:19:47.547701"
+    },
+    {
+      "test_name": "Login Test",
+      "success": false,
+      "details": "No user data available",
+      "timestamp": "2026-01-07T00:19:47.547724"
+    },
+    {
+      "test_name": "Auth Me",
+      "success": false,
+      "details": "No token available",
+      "timestamp": "2026-01-07T00:19:47.547732"
+    },
+    {
+      "test_name": "Applications CRUD",
+      "success": false,
+      "details": "No token available",
+      "timestamp": "2026-01-07T00:19:47.547739"
+    },
+    {
+      "test_name": "Profile Operations",
+      "success": false,
+      "details": "No token available",
+      "timestamp": "2026-01-07T00:19:47.547747"
+    },
+    {
+      "test_name": "Stats",
+      "success": false,
+      "details": "No token available",
+      "timestamp": "2026-01-07T00:19:47.547755"
+    },
+    {
+      "test_name": "Unauthorized Access",
+      "success": true,
+      "details": "Status: 401, Expected: 401",
+      "timestamp": "2026-01-07T00:19:47.590663"
+    }
+  ]
+}
