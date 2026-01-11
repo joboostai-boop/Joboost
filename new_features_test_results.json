@@ -1,0 +1,100 @@
+{
+  "summary": {
+    "tests_run": 15,
+    "tests_passed": 15,
+    "success_rate": 100.0,
+    "timestamp": "2026-01-11T23:17:30.117220"
+  },
+  "detailed_results": [
+    {
+      "test_name": "User Registration",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:29.618912"
+    },
+    {
+      "test_name": "GET /api/stats/timeline",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:29.654952"
+    },
+    {
+      "test_name": "Timeline Data Structure",
+      "success": true,
+      "details": "Timeline entries: 0",
+      "timestamp": "2026-01-11T23:17:29.655636"
+    },
+    {
+      "test_name": "GET /api/recommendations",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:29.693538"
+    },
+    {
+      "test_name": "Recommendations Data Structure",
+      "success": true,
+      "details": "Offers count: 0",
+      "timestamp": "2026-01-11T23:17:29.694164"
+    },
+    {
+      "test_name": "POST /api/spontaneous/search",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:29.945132"
+    },
+    {
+      "test_name": "Companies Data Structure",
+      "success": true,
+      "details": "Companies count: 5",
+      "timestamp": "2026-01-11T23:17:29.945761"
+    },
+    {
+      "test_name": "Company Fields Validation",
+      "success": true,
+      "details": "First company fields: ['id', 'name', 'siret', 'naf', 'address', 'city', 'headcount', 'hiring_score', 'contact_mode', 'website', 'sector']",
+      "timestamp": "2026-01-11T23:17:29.945792"
+    },
+    {
+      "test_name": "Get User Credits",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:29.983547"
+    },
+    {
+      "test_name": "Initial Credits Check",
+      "success": true,
+      "details": "Initial credits: 5",
+      "timestamp": "2026-01-11T23:17:29.984164"
+    },
+    {
+      "test_name": "POST /api/spontaneous/send",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:30.048153"
+    },
+    {
+      "test_name": "Get User Credits After",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:30.080518"
+    },
+    {
+      "test_name": "Credits Deduction",
+      "success": true,
+      "details": "Final credits: 3, Expected: 3",
+      "timestamp": "2026-01-11T23:17:30.081146"
+    },
+    {
+      "test_name": "Get User Info",
+      "success": true,
+      "details": "Status: 200, Expected: 200",
+      "timestamp": "2026-01-11T23:17:30.116191"
+    },
+    {
+      "test_name": "User Credit Fields",
+      "success": true,
+      "details": "Credit values: {'ai_cv_credits': 1, 'ai_letter_credits': 1, 'spontaneous_credits': 3}",
+      "timestamp": "2026-01-11T23:17:30.117011"
+    }
+  ]
+}
