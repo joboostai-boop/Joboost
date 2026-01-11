@@ -12,15 +12,29 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // Initialize from localStorage immediately
+  const storedUser = localStorage.getItem('joboost_user');
+  const storedToken = localStorage.getItem('joboost_token');
+  
+  const [user, setUser] = useState(() => {
+    if (storedUser && storedToken) {
+      try {
+        return JSON.parse(storedUser);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!storedToken && !!storedUser);
 
   const checkAuth = useCallback(async () => {
     const token = localStorage.getItem('joboost_token');
     if (!token) {
       setLoading(false);
       setIsAuthenticated(false);
+      setUser(null);
       return;
     }
 
@@ -28,10 +42,13 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.getMe();
       setUser(response.data);
       setIsAuthenticated(true);
+      // Update stored user with fresh data
+      localStorage.setItem('joboost_user', JSON.stringify(response.data));
     } catch (error) {
       console.error('Auth check failed:', error);
       localStorage.removeItem('joboost_token');
       localStorage.removeItem('joboost_user');
+      setUser(null);
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
@@ -85,9 +102,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = (updates) => {
-    setUser((prev) => ({ ...prev, ...updates }));
-    const stored = JSON.parse(localStorage.getItem('joboost_user') || '{}');
-    localStorage.setItem('joboost_user', JSON.stringify({ ...stored, ...updates }));
+    const updatedUser = { ...user, ...updates };
+    setUser(updatedUser);
+    localStorage.setItem('joboost_user', JSON.stringify(updatedUser));
   };
 
   const value = {
