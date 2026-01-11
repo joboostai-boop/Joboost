@@ -18,7 +18,7 @@ async def fetch_francetravail(keywords: str, location: str, limit: int = 20) -> 
     
     Args:
         keywords: Search keywords (job title, skills)
-        location: City name or postal code
+        location: City name or department code
         limit: Max number of results
     
     Returns:
@@ -29,6 +29,36 @@ async def fetch_francetravail(keywords: str, location: str, limit: int = 20) -> 
         
         token = await auth.get_token()
         
+        # Map common city names to department codes
+        dept_mapping = {
+            "paris": "75",
+            "lyon": "69",
+            "marseille": "13",
+            "toulouse": "31",
+            "nice": "06",
+            "nantes": "44",
+            "strasbourg": "67",
+            "montpellier": "34",
+            "bordeaux": "33",
+            "lille": "59",
+            "rennes": "35",
+            "reims": "51",
+            "saint-etienne": "42",
+            "le havre": "76",
+            "toulon": "83"
+        }
+        
+        # Determine department from location
+        location_lower = location.lower().strip()
+        department = dept_mapping.get(location_lower)
+        
+        # If not found in mapping, check if it's already a department code
+        if not department:
+            if location.isdigit() and len(location) <= 3:
+                department = location.zfill(2)
+            else:
+                department = "75"  # Default to Paris
+        
         async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.get(
                 FRANCETRAVAIL_OFFERS_URL,
@@ -38,13 +68,13 @@ async def fetch_francetravail(keywords: str, location: str, limit: int = 20) -> 
                 },
                 params={
                     "motsCles": keywords,
-                    "commune": location,
-                    "range": f"0-{limit-1}",
-                    "sort": 1  # Sort by date
+                    "departement": department,
+                    "range": f"0-{limit-1}"
                 }
             )
             
-            if response.status_code == 200:
+            # 200 or 206 (partial content) are both success
+            if response.status_code in [200, 206]:
                 data = response.json()
                 results = data.get("resultats", [])
                 
