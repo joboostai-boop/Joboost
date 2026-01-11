@@ -365,6 +365,10 @@ const DashboardPage = () => {
               <LayoutGrid className="w-5 h-5" />
               Tableau de bord
             </Link>
+            <Link to="/spontaneous" className="sidebar-link">
+              <Send className="w-5 h-5" />
+              Candidatures spontanées
+            </Link>
             <Link to="/profile" className="sidebar-link">
               <User className="w-5 h-5" />
               Mon Profil
