@@ -35,7 +35,10 @@ import {
   Loader2,
   ChevronDown,
   Menu,
-  X
+  X,
+  Send,
+  FileText,
+  TrendingUp
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -55,6 +58,8 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import ProgressChart from '../components/ProgressChart';
+import OfferCard from '../components/OfferCard';
 
 const STATUSES = [
   { id: 'todo', label: 'À faire', color: 'bg-slate-100 text-slate-600 border-slate-200' },
