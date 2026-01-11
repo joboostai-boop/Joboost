@@ -459,9 +459,13 @@ async def update_application_status(application_id: str, status: str, current_us
 
 @api_router.post("/ai/generate")
 async def generate_ai_content(request: AIGenerateRequest, current_user: dict = Depends(get_current_user)):
-    # Check credits
-    if current_user.get("subscription_plan") != "pro" and current_user.get("ai_credits", 0) <= 0:
-        raise HTTPException(status_code=403, detail="Crédits IA épuisés. Passez au plan Pro pour des générations illimitées.")
+    # Determine which credit to check
+    credit_field = "ai_letter_credits" if request.generation_type == "cover_letter" else "ai_cv_credits"
+    current_credits = current_user.get(credit_field, 0)
+    
+    # Check credits (ultra plan has 99999)
+    if current_user.get("subscription_plan") not in ["pro", "ultra"] and current_credits <= 0:
+        raise HTTPException(status_code=403, detail=f"Crédits {request.generation_type} épuisés. Passez au plan Pro pour plus de générations.")
     
     # Get application
     application = await db.applications.find_one(
