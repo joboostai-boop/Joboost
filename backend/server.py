@@ -893,11 +893,6 @@ async def get_job_recommendations(current_user: dict = Depends(get_current_user)
     offers.sort(key=lambda x: x["match_score"], reverse=True)
     
     return {"offers": offers[:15]}
-    
-    # Sort by match score
-    offers.sort(key=lambda x: x["match_score"], reverse=True)
-    
-    return {"offers": offers[:15]}
 
 # ============ HEALTH CHECK ============
 
