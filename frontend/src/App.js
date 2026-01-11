@@ -128,6 +128,14 @@ function AppRouter() {
         }
       />
       <Route
+        path="/spontaneous"
+        element={
+          <ProtectedRoute>
+            <SpontaneousPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/generator/:applicationId"
         element={
           <ProtectedRoute>
