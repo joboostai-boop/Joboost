@@ -14,7 +14,7 @@ class FranceTravailAuth:
     """OAuth2 client credentials flow for France Travail APIs"""
     
     TOKEN_URL = "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=/partenaire"
-    SCOPES = "api_offresdemploiv2 api_labonneboitev1"
+    SCOPES = "o2dsoffre api_offresdemploiv2"
     
     def __init__(self):
         self.client_id = os.getenv('FRANCETRAVAIL_CLIENT_ID')
