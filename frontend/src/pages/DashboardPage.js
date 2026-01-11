@@ -190,7 +190,42 @@ const DashboardPage = () => {
 
   useEffect(() => {
     fetchData();
+    fetchTimeline();
+    fetchOffers();
   }, []);
+
+  const fetchTimeline = async () => {
+    try {
+      const token = localStorage.getItem('joboost_token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/stats/timeline`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTimeline(data.timeline || []);
+      }
+    } catch (error) {
+      console.error('Timeline error:', error);
+    }
+  };
+
+  const fetchOffers = async () => {
+    setOffersLoading(true);
+    try {
+      const token = localStorage.getItem('joboost_token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recommendations`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setOffers(data.offers || []);
+      }
+    } catch (error) {
+      console.error('Offers error:', error);
+    } finally {
+      setOffersLoading(false);
+    }
+  };
 
   const fetchData = async () => {
     try {
