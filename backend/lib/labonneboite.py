@@ -1,52 +1,95 @@
 """
-La Bonne Boîte API Integration
+La Bonne Boîte API Integration via France Travail
 Search for companies open to spontaneous applications
 """
 import httpx
-import os
+import logging
 from typing import List, Dict, Any
+
+logger = logging.getLogger(__name__)
+
+# API Base URL
+LABONNEBOITE_API_URL = "https://api.francetravail.io/partenaire/labonneboite/v1/company/"
+
 
 async def search_companies(location: str, rome: str = "M1805", radius: int = 10) -> Dict[str, Any]:
     """
-    Search companies via La Bonne Boîte API (Pôle Emploi)
-    rome: M1805 = Développeur informatique, M1607 = Secrétaire, etc.
+    Search companies via La Bonne Boîte API (France Travail)
+    
+    Args:
+        location: City name or postal code
+        rome: ROME code (e.g., M1805 = Développeur informatique)
+        radius: Search radius in km
+    
+    Returns:
+        Dict with companies list
     """
-    url = "https://labonneboite.pole-emploi.fr/api/v1/company/"
-    
-    # Fallback to mock data if no API key
-    api_key = os.getenv("LABONNEBOITE_API_KEY")
-    
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            params = {
-                "commune": location,
-                "rome_codes": rome,
-                "distance": radius
-            }
-            
-            headers = {}
-            if api_key:
-                headers["Authorization"] = f"Bearer {api_key}"
-            
-            response = await client.get(url, params=params, headers=headers)
+        from .francetravail_oauth import auth
+        
+        token = await auth.get_token()
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(
+                LABONNEBOITE_API_URL,
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Accept": "application/json"
+                },
+                params={
+                    "commune": location,
+                    "rome_codes": rome,
+                    "distance": radius,
+                    "sort": "score",
+                    "count": 20
+                }
+            )
             
             if response.status_code == 200:
-                return response.json()
+                data = response.json()
+                companies = data.get("companies", [])
+                
+                # Format companies for frontend
+                formatted_companies = []
+                for company in companies:
+                    formatted_companies.append({
+                        "id": company.get("siret", str(hash(company.get("name", "")))),
+                        "name": company.get("name", "Entreprise"),
+                        "siret": company.get("siret", ""),
+                        "naf": company.get("naf", ""),
+                        "address": company.get("address", ""),
+                        "city": company.get("city", location),
+                        "headcount": company.get("headcount_text", "Non communiqué"),
+                        "hiring_score": int(company.get("stars", 3) * 20),  # Convert 0-5 stars to 0-100
+                        "contact_mode": company.get("contact_mode", "email"),
+                        "website": company.get("website", ""),
+                        "sector": company.get("naf_text", ""),
+                        "distance": company.get("distance", 0)
+                    })
+                
+                logger.info(f"Found {len(formatted_companies)} companies via La Bonne Boîte")
+                return {
+                    "companies": formatted_companies,
+                    "total": len(formatted_companies),
+                    "location": location,
+                    "source": "France Travail - La Bonne Boîte"
+                }
             else:
-                # Return mock data for demo
+                logger.warning(f"La Bonne Boîte API error: {response.status_code} - {response.text}")
                 return get_mock_companies(location)
+                
     except Exception as e:
-        print(f"La Bonne Boîte API error: {e}")
+        logger.error(f"La Bonne Boîte API error: {e}")
         return get_mock_companies(location)
 
 
 def get_mock_companies(location: str) -> Dict[str, Any]:
-    """Mock company data for demonstration"""
+    """Fallback mock data when API is unavailable"""
     return {
         "companies": [
             {
-                "id": "comp_001",
-                "name": "Tech Solutions Paris",
+                "id": "mock_001",
+                "name": "Tech Solutions France",
                 "siret": "12345678901234",
                 "naf": "6201Z",
                 "address": f"15 Rue de l'Innovation, {location}",
@@ -58,7 +101,7 @@ def get_mock_companies(location: str) -> Dict[str, Any]:
                 "sector": "Développement informatique"
             },
             {
-                "id": "comp_002",
+                "id": "mock_002",
                 "name": "Digital Factory",
                 "siret": "98765432109876",
                 "naf": "6201Z",
@@ -71,7 +114,7 @@ def get_mock_companies(location: str) -> Dict[str, Any]:
                 "sector": "Conseil en systèmes informatiques"
             },
             {
-                "id": "comp_003",
+                "id": "mock_003",
                 "name": "InnovateTech",
                 "siret": "45678901234567",
                 "naf": "6202A",
@@ -82,34 +125,9 @@ def get_mock_companies(location: str) -> Dict[str, Any]:
                 "contact_mode": "email",
                 "website": "https://innovatetech.fr",
                 "sector": "Conseil en informatique"
-            },
-            {
-                "id": "comp_004",
-                "name": "CloudNine Solutions",
-                "siret": "78901234567890",
-                "naf": "6311Z",
-                "address": f"42 Boulevard du Cloud, {location}",
-                "city": location,
-                "headcount": "10-19",
-                "hiring_score": 70,
-                "contact_mode": "email",
-                "website": "https://cloudnine.fr",
-                "sector": "Hébergement et traitement de données"
-            },
-            {
-                "id": "comp_005",
-                "name": "DataVision",
-                "siret": "23456789012345",
-                "naf": "6202B",
-                "address": f"8 Rue des Données, {location}",
-                "city": location,
-                "headcount": "50-99",
-                "hiring_score": 88,
-                "contact_mode": "form",
-                "website": "https://datavision.fr",
-                "sector": "Data Science & Analytics"
             }
         ],
-        "total": 5,
-        "location": location
+        "total": 3,
+        "location": location,
+        "source": "Mock Data (API unavailable)"
     }
