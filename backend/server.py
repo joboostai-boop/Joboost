@@ -745,13 +745,20 @@ async def stripe_webhook(request: Request):
         if webhook_response.payment_status == "paid":
             metadata = webhook_response.metadata
             user_id = metadata.get("user_id")
+            plan_id = metadata.get("plan", "pro_monthly")
             
             if user_id:
+                # Get plan credits
+                plan_credits = PLANS.get(plan_id, PLANS["pro_monthly"])
+                
                 await db.users.update_one(
                     {"user_id": user_id},
                     {"$set": {
-                        "subscription_plan": "pro",
-                        "ai_credits": 999999
+                        "subscription_plan": "ultra" if "ultra" in plan_id else "pro",
+                        "ai_credits": plan_credits.get("ai_cv_credits", 100),
+                        "ai_cv_credits": plan_credits.get("ai_cv_credits", 100),
+                        "ai_letter_credits": plan_credits.get("ai_letter_credits", 100),
+                        "spontaneous_credits": plan_credits.get("spontaneous_credits", 500)
                     }}
                 )
                 
