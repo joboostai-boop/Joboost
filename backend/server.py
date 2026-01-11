@@ -870,8 +870,8 @@ async def send_spontaneous_applications(request: SpontaneousSendRequest, current
 
 @api_router.get("/recommendations")
 async def get_job_recommendations(current_user: dict = Depends(get_current_user)):
-    """Get personalized job recommendations based on user profile"""
-    from lib.jobs_api import fetch_jooble, match_score
+    """Get personalized job recommendations from France Travail based on user profile"""
+    from lib.jobs_api import fetch_francetravail, match_score
     
     profile = await db.profiles.find_one({"user_id": current_user["user_id"]}, {"_id": 0})
     
@@ -882,22 +882,17 @@ async def get_job_recommendations(current_user: dict = Depends(get_current_user)
     location = profile.get("location", "Paris")
     skills = profile.get("skills", [])
     
-    jobs = await fetch_jooble(keywords, location)
+    # Fetch real offers from France Travail
+    offers = await fetch_francetravail(keywords, location)
     
-    offers = []
-    for job in jobs:
-        snippet = job.get("snippet", "") or job.get("description", "")
-        score = match_score(skills, snippet)
-        offers.append({
-            "title": job.get("title", ""),
-            "company": job.get("company", "Entreprise"),
-            "location": job.get("location", location),
-            "url": job.get("link", "#"),
-            "source": "Jooble",
-            "match_score": score,
-            "salary": job.get("salary", ""),
-            "type": job.get("type", "CDI")
-        })
+    # Calculate match score for each offer
+    for offer in offers:
+        offer["match_score"] = match_score(skills, offer.get("description", ""))
+    
+    # Sort by match score
+    offers.sort(key=lambda x: x["match_score"], reverse=True)
+    
+    return {"offers": offers[:15]}
     
     # Sort by match score
     offers.sort(key=lambda x: x["match_score"], reverse=True)
