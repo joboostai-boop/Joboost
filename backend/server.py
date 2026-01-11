@@ -790,6 +790,101 @@ async def get_stats(current_user: dict = Depends(get_current_user)):
     
     return {"stats": stats}
 
+@api_router.get("/stats/timeline")
+async def get_timeline(current_user: dict = Depends(get_current_user)):
+    """Get timeline data for progress chart"""
+    from collections import defaultdict
+    
+    applications = await db.applications.find(
+        {"user_id": current_user["user_id"]},
+        {"_id": 0, "status": 1, "created_at": 1, "updated_at": 1}
+    ).to_list(1000)
+    
+    weekly = defaultdict(lambda: {"applied": 0, "interview": 0, "offer": 0, "todo": 0, "rejected": 0})
+    
+    for app in applications:
+        date_str = app.get("created_at", "")[:10]  # Get YYYY-MM-DD
+        if date_str:
+            status = app.get("status", "todo")
+            weekly[date_str][status] += 1
+    
+    timeline = [{"date": k, **v} for k, v in sorted(weekly.items())]
+    return {"timeline": timeline}
+
+# ============ SPONTANEOUS APPLICATIONS ROUTES ============
+
+@api_router.post("/spontaneous/search")
+async def search_spontaneous_companies(request: SpontaneousSearchRequest, current_user: dict = Depends(get_current_user)):
+    """Search companies for spontaneous applications"""
+    from lib.labonneboite import search_companies
+    
+    result = await search_companies(request.location, request.rome, request.radius)
+    return result
+
+@api_router.post("/spontaneous/send")
+async def send_spontaneous_applications(request: SpontaneousSendRequest, current_user: dict = Depends(get_current_user)):
+    """Send spontaneous applications (deducts credits)"""
+    credits_needed = len(request.company_ids)
+    current_credits = current_user.get("spontaneous_credits", 0)
+    
+    if current_credits < credits_needed:
+        raise HTTPException(status_code=403, detail=f"Crédits insuffisants. Vous avez {current_credits} crédits, il vous en faut {credits_needed}.")
+    
+    # Deduct credits
+    await db.users.update_one(
+        {"user_id": current_user["user_id"]},
+        {"$inc": {"spontaneous_credits": -credits_needed}}
+    )
+    
+    # Log the spontaneous applications
+    for company_id in request.company_ids:
+        await db.spontaneous_applications.insert_one({
+            "user_id": current_user["user_id"],
+            "company_id": company_id,
+            "status": "sent",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        })
+    
+    return {"message": f"{credits_needed} candidature(s) spontanée(s) envoyée(s) avec succès", "credits_remaining": current_credits - credits_needed}
+
+# ============ JOB RECOMMENDATIONS ROUTES ============
+
+@api_router.get("/recommendations")
+async def get_job_recommendations(current_user: dict = Depends(get_current_user)):
+    """Get personalized job recommendations based on user profile"""
+    from lib.jobs_api import fetch_jooble, match_score
+    
+    profile = await db.profiles.find_one({"user_id": current_user["user_id"]}, {"_id": 0})
+    
+    if not profile:
+        return {"offers": [], "message": "Complétez votre profil pour recevoir des recommandations personnalisées"}
+    
+    keywords = profile.get("title", "Développeur")
+    location = profile.get("location", "Paris")
+    skills = profile.get("skills", [])
+    
+    jobs = await fetch_jooble(keywords, location)
+    
+    offers = []
+    for job in jobs:
+        snippet = job.get("snippet", "") or job.get("description", "")
+        score = match_score(skills, snippet)
+        offers.append({
+            "title": job.get("title", ""),
+            "company": job.get("company", "Entreprise"),
+            "location": job.get("location", location),
+            "url": job.get("link", "#"),
+            "source": "Jooble",
+            "match_score": score,
+            "salary": job.get("salary", ""),
+            "type": job.get("type", "CDI")
+        })
+    
+    # Sort by match score
+    offers.sort(key=lambda x: x["match_score"], reverse=True)
+    
+    return {"offers": offers[:15]}
+
 # ============ HEALTH CHECK ============
 
 @api_router.get("/")
