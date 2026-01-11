@@ -30,9 +30,9 @@ const PricingPage = () => {
         'Organisation illimitée des candidatures',
         'Vue Kanban et vue liste',
         'Profil Maître complet',
-        '1 génération IA offerte',
-        'Notes et suivi de candidatures',
-        'Export basique'
+        '1 CV + 1 Lettre IA',
+        '5 candidatures spontanées',
+        'Notes et suivi'
       ],
       cta: user?.subscription_plan === 'free' ? 'Plan actuel' : 'Commencer gratuitement',
       highlighted: false,
@@ -40,18 +40,17 @@ const PricingPage = () => {
     },
     {
       id: 'pro_monthly',
-      name: 'Pro Mensuel',
+      name: 'Pro',
       price: '9,99€',
       period: '/mois',
-      description: 'Pour les chercheurs d\'emploi actifs',
+      description: 'Pour les chercheurs actifs',
       features: [
         'Tout le plan Gratuit',
-        'Générations IA illimitées',
-        'Lettres de motivation personnalisées',
-        'CV optimisés pour chaque offre',
+        '100 CV IA par mois',
+        '100 Lettres IA par mois',
+        '500 candidatures spontanées',
         'Export PDF premium',
-        'Support prioritaire',
-        'Statistiques avancées'
+        'Support prioritaire'
       ],
       cta: user?.subscription_plan === 'pro' ? 'Plan actuel' : 'Passer au Pro',
       highlighted: true,
@@ -59,20 +58,23 @@ const PricingPage = () => {
       badge: 'Recommandé'
     },
     {
-      id: 'pro_yearly',
-      name: 'Pro Annuel',
-      price: '99,99€',
-      period: '/an',
-      description: '2 mois offerts',
-      savings: 'Économisez 20€',
+      id: 'ultra_monthly',
+      name: 'Ultra',
+      price: '14,99€',
+      period: '/mois',
+      description: 'Pour les professionnels exigeants',
+      savings: 'TOUT ILLIMITÉ',
       features: [
-        'Tout le plan Pro Mensuel',
-        '2 mois gratuits',
-        'Accès prioritaire aux nouvelles fonctionnalités'
+        'Tout le plan Pro',
+        'CV IA ILLIMITÉS',
+        'Lettres IA ILLIMITÉES',
+        'Spontanées ILLIMITÉES',
+        'Offres personnalisées prioritaires',
+        'Support VIP'
       ],
-      cta: user?.subscription_plan === 'pro' ? 'Plan actuel' : 'Économiser 20€',
+      cta: user?.subscription_plan === 'ultra' ? 'Plan actuel' : 'Passer à Ultra',
       highlighted: false,
-      disabled: user?.subscription_plan === 'pro'
+      disabled: user?.subscription_plan === 'ultra'
     }
   ];
 
