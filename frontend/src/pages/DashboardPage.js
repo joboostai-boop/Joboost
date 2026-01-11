@@ -477,6 +477,22 @@ const DashboardPage = () => {
         {/* Stats Cards */}
         {stats && (
           <div className="px-4 lg:px-8 py-6">
+            {/* Credits Display */}
+            <div className="mb-4 flex flex-wrap gap-3 text-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-sky-50 text-sky-700 rounded-full">
+                <FileText className="w-4 h-4" />
+                CV: {user?.ai_cv_credits || 0}
+              </span>
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-700 rounded-full">
+                <Sparkles className="w-4 h-4" />
+                Lettres: {user?.ai_letter_credits || 0}
+              </span>
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full">
+                <Send className="w-4 h-4" />
+                Spontanées: {user?.spontaneous_credits || 0}
+              </span>
+            </div>
+            
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="stat-card">
                 <div className="flex items-center gap-3">
@@ -497,6 +513,39 @@ const DashboardPage = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Progress Chart */}
+        {timeline.length > 0 && (
+          <div className="px-4 lg:px-8 pb-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp className="w-5 h-5 text-slate-600" />
+                <h3 className="font-heading font-semibold text-slate-900">Ma progression</h3>
+              </div>
+              <ProgressChart data={timeline} />
+            </div>
+          </div>
+        )}
+
+        {/* Personalized Offers */}
+        {offers.length > 0 && (
+          <div className="px-4 lg:px-8 pb-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-sky-500" />
+                  <h3 className="font-heading font-semibold text-slate-900">Offres personnalisées</h3>
+                </div>
+                <span className="text-sm text-slate-500">Basées sur votre profil</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {offers.slice(0, 6).map((offer, index) => (
+                  <OfferCard key={index} offer={offer} />
+                ))}
+              </div>
             </div>
           </div>
         )}
