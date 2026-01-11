@@ -709,12 +709,19 @@ async def get_payment_status(session_id: str, current_user: dict = Depends(get_c
                     }}
                 )
                 
-                # Upgrade user to Pro
+                # Upgrade user to Pro/Ultra
+                transaction = await db.payment_transactions.find_one({"session_id": session_id})
+                plan_id = transaction.get("plan", "pro_monthly") if transaction else "pro_monthly"
+                plan_credits = PLANS.get(plan_id, PLANS["pro_monthly"])
+                
                 await db.users.update_one(
                     {"user_id": current_user["user_id"]},
                     {"$set": {
-                        "subscription_plan": "pro",
-                        "ai_credits": 999999  # Unlimited
+                        "subscription_plan": "ultra" if "ultra" in plan_id else "pro",
+                        "ai_credits": plan_credits.get("ai_cv_credits", 100),
+                        "ai_cv_credits": plan_credits.get("ai_cv_credits", 100),
+                        "ai_letter_credits": plan_credits.get("ai_letter_credits", 100),
+                        "spontaneous_credits": plan_credits.get("spontaneous_credits", 500)
                     }}
                 )
         
