@@ -55,7 +55,18 @@ class UserResponse(BaseModel):
     picture: Optional[str] = None
     subscription_plan: str = "free"
     ai_credits: int = 1
+    ai_cv_credits: int = 1
+    ai_letter_credits: int = 1
+    spontaneous_credits: int = 5
     created_at: Optional[str] = None
+
+class SpontaneousSearchRequest(BaseModel):
+    location: str
+    rome: str = "M1805"
+    radius: int = 10
+
+class SpontaneousSendRequest(BaseModel):
+    company_ids: List[str]
 
 class ProfileExperience(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -178,6 +189,9 @@ async def register(user_data: UserCreate):
         "picture": None,
         "subscription_plan": "free",
         "ai_credits": 1,
+        "ai_cv_credits": 1,
+        "ai_letter_credits": 1,
+        "spontaneous_credits": 5,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "onboarding_completed": False
     }
@@ -194,6 +208,9 @@ async def register(user_data: UserCreate):
             "name": user_data.name,
             "subscription_plan": "free",
             "ai_credits": 1,
+            "ai_cv_credits": 1,
+            "ai_letter_credits": 1,
+            "spontaneous_credits": 5,
             "onboarding_completed": False
         }
     }
@@ -218,6 +235,9 @@ async def login(user_data: UserLogin):
             "picture": user.get("picture"),
             "subscription_plan": user.get("subscription_plan", "free"),
             "ai_credits": user.get("ai_credits", 1),
+            "ai_cv_credits": user.get("ai_cv_credits", 1),
+            "ai_letter_credits": user.get("ai_letter_credits", 1),
+            "spontaneous_credits": user.get("spontaneous_credits", 5),
             "onboarding_completed": user.get("onboarding_completed", False)
         }
     }
@@ -231,6 +251,9 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         picture=current_user.get("picture"),
         subscription_plan=current_user.get("subscription_plan", "free"),
         ai_credits=current_user.get("ai_credits", 1),
+        ai_cv_credits=current_user.get("ai_cv_credits", 1),
+        ai_letter_credits=current_user.get("ai_letter_credits", 1),
+        spontaneous_credits=current_user.get("spontaneous_credits", 5),
         created_at=current_user.get("created_at")
     )
 
@@ -571,9 +594,43 @@ Génère un CV structuré et optimisé pour cette candidature."""
 
 # ============ PAYMENT ROUTES ============
 
+# 3 Plans with separate credits
 PLANS = {
-    "pro_monthly": {"amount": 9.99, "name": "Pro Mensuel"},
-    "pro_yearly": {"amount": 99.99, "name": "Pro Annuel"}
+    "free": {
+        "amount": 0,
+        "name": "Gratuit",
+        "ai_cv_credits": 1,
+        "ai_letter_credits": 1,
+        "spontaneous_credits": 5
+    },
+    "pro_monthly": {
+        "amount": 9.99,
+        "name": "Pro Mensuel",
+        "ai_cv_credits": 100,
+        "ai_letter_credits": 100,
+        "spontaneous_credits": 500
+    },
+    "pro_yearly": {
+        "amount": 99.99,
+        "name": "Pro Annuel",
+        "ai_cv_credits": 100,
+        "ai_letter_credits": 100,
+        "spontaneous_credits": 500
+    },
+    "ultra_monthly": {
+        "amount": 14.99,
+        "name": "Ultra Mensuel",
+        "ai_cv_credits": 99999,
+        "ai_letter_credits": 99999,
+        "spontaneous_credits": 99999
+    },
+    "ultra_yearly": {
+        "amount": 149.99,
+        "name": "Ultra Annuel",
+        "ai_cv_credits": 99999,
+        "ai_letter_credits": 99999,
+        "spontaneous_credits": 99999
+    }
 }
 
 @api_router.post("/payments/checkout")
