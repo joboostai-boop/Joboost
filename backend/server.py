@@ -579,11 +579,12 @@ Génère un CV structuré et optimisé pour cette candidature."""
             {"$set": {field_name: generated_content, "updated_at": datetime.now(timezone.utc).isoformat()}}
         )
         
-        # Deduct credit if not Pro
-        if current_user.get("subscription_plan") != "pro":
+        # Deduct specific credit if not Ultra
+        if current_user.get("subscription_plan") != "ultra":
+            credit_field = "ai_letter_credits" if request.generation_type == "cover_letter" else "ai_cv_credits"
             await db.users.update_one(
                 {"user_id": current_user["user_id"]},
-                {"$inc": {"ai_credits": -1}}
+                {"$inc": {credit_field: -1, "ai_credits": -1}}
             )
         
         return {
