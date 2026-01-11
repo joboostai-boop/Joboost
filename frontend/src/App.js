@@ -15,6 +15,7 @@ import PricingPage from './pages/PricingPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import SettingsPage from './pages/SettingsPage';
 import GeneratorPage from './pages/GeneratorPage';
+import SpontaneousPage from './pages/SpontaneousPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
