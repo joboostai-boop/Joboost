@@ -122,7 +122,7 @@ function AppRouter() {
         path="/spontaneous"
         element={
           <ProtectedRoute>
-            <SpontaneousPage />
+            <SpontaneousPageNew />
           </ProtectedRoute>
         }
       />
