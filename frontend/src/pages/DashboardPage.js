@@ -350,7 +350,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Sidebar */}
+      {/* Sidebar Principale */}
       <aside className={`fixed lg:sticky top-0 left-0 z-40 w-64 h-screen bg-white border-r border-slate-200 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-slate-100">
@@ -359,8 +359,8 @@ const DashboardPage = () => {
 
           <nav className="flex-1 p-4 space-y-1">
             <Link to="/dashboard" className="sidebar-link active">
-              <LayoutGrid className="w-5 h-5" />
-              Tableau de bord
+              <Home className="w-5 h-5" />
+              Dashboard
             </Link>
             <Link to="/spontaneous" className="sidebar-link">
               <Send className="w-5 h-5" />
@@ -410,6 +410,14 @@ const DashboardPage = () => {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Panneau Offres Personnalisées (visible sur grand écran) */}
+      <OffersPanel 
+        offers={offers} 
+        loading={offersLoading}
+        selectedOffer={selectedOffer}
+        onSelectOffer={setSelectedOffer}
+      />
 
       {/* Main Content */}
       <main className="flex-1 min-w-0">
