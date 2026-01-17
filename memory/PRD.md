@@ -42,14 +42,17 @@ Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le mar
 ### Phase 3 - Branding & UX (2026-01-17)
 - ✅ Intégration du logo Joboost partout dans l'app
   - Header/Navbar (Landing, Dashboard, Auth pages)
-  - Hero section (Landing page)
   - Sidebar (Dashboard)
   - Footer
   - Pages de paiement (succès/erreur)
   - Onboarding
 - ✅ Favicon et métadonnées OG pour partage social
 - ✅ Responsive logo sizing (mobile/tablet/desktop)
-- ✅ Animation fade-in sur le hero logo
+- ✅ Nouveau logo JPG remplace PNG
+- ✅ Logo retiré du hero de la landing page (sur demande utilisateur)
+- ✅ Pages d'erreur 404 et 500 avec logo
+- ✅ Loading Screen animé avec logo et spinner
+- ✅ Composant ConfirmModal réutilisable avec logo
 
 ## Prioritized Backlog
 
@@ -78,6 +81,42 @@ Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le mar
 /app/backend/
 ├── server.py (main API)
 ├── lib/
+│   ├── francetravail_oauth.py (France Travail OAuth2)
+│   ├── labonneboite.py (spontaneous search)
+│   └── jobs_api.py (job recommendations)
+└── .env
+
+/app/frontend/src/
+├── pages/
+│   ├── LandingPage.js
+│   ├── LoginPage.js
+│   ├── RegisterPage.js
+│   ├── DashboardPage.js
+│   ├── ProfilePage.js
+│   ├── OnboardingPage.js
+│   ├── PricingPage.js
+│   ├── PaymentSuccessPage.js
+│   ├── GeneratorPage.js
+│   ├── SpontaneousPage.js
+│   ├── SettingsPage.js
+│   ├── NotFoundPage.js (404)
+│   └── ErrorPage.js (500)
+├── components/
+│   ├── ui/ (Shadcn)
+│   ├── Logo.js (Composant Logo réutilisable)
+│   ├── LoadingScreen.js (Loading avec logo animé)
+│   ├── ConfirmModal.js (Modal avec logo)
+│   ├── MarqueeLogos/ (Carrousel partenaires)
+│   ├── OfferCard.js
+│   └── ProgressChart.js
+├── context/AuthContext.js
+└── lib/api.js
+
+/app/frontend/public/
+├── images/logo.jpg (Logo Joboost principal)
+├── favicon.ico
+└── index.html (avec meta OG)
+```
 │   ├── francetravail_oauth.py (France Travail OAuth2)
 │   ├── labonneboite.py (spontaneous search)
 │   └── jobs_api.py (job recommendations)
