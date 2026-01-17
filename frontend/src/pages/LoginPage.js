@@ -5,7 +5,8 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { toast } from 'sonner';
-import { Briefcase, Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
+import Logo from '../components/Logo';
+import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -47,12 +48,7 @@ const LoginPage = () => {
       {/* Left Panel - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
-          <Link to="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-heading font-bold text-2xl text-slate-900">Joboost</span>
-          </Link>
+          <Logo size="lg" href="/" className="mb-8" />
 
           <h1 className="font-heading text-3xl font-bold text-slate-900 mb-2">
             Bon retour !
@@ -173,8 +169,8 @@ const LoginPage = () => {
       {/* Right Panel - Visual */}
       <div className="hidden lg:flex flex-1 bg-slate-900 items-center justify-center p-12">
         <div className="max-w-md text-center">
-          <div className="w-20 h-20 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-8">
-            <Briefcase className="w-10 h-10 text-white" />
+          <div className="flex justify-center mb-8">
+            <Logo size="xl" className="filter brightness-0 invert" />
           </div>
           <h2 className="font-heading text-3xl font-bold text-white mb-4">
             Organisez votre recherche d'emploi
