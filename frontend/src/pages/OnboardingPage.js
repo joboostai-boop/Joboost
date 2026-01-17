@@ -7,6 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { toast } from 'sonner';
+import Logo from '../components/Logo';
 import { 
   Briefcase, 
   User, 
@@ -497,8 +498,8 @@ const OnboardingPage = () => {
       <div className="max-w-3xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Briefcase className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-4">
+            <Logo size="xl" href="/" />
           </div>
           <h1 className="font-heading text-3xl font-bold text-slate-900 mb-2">
             Créez votre Profil Maître

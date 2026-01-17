@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Textarea } from '../components/ui/textarea';
 import { toast } from 'sonner';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import Logo from '../components/Logo';
 import {
   Briefcase,
   ArrowLeft,
