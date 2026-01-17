@@ -9,6 +9,7 @@ Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le mar
 - **Auth**: JWT + Google OAuth (Emergent-managed)
 - **AI**: OpenAI GPT-4o via Emergent LLM key
 - **Payments**: Stripe
+- **External APIs**: France Travail (OAuth2)
 
 ## User Personas
 1. **Chercheurs d'emploi français** - Organisation méthodique
@@ -33,10 +34,22 @@ Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le mar
 - ✅ Export PDF côté client
 
 ### Phase 2 - Nouvelles fonctionnalités (2025-01-11)
-- ✅ Candidatures spontanées (La Bonne Boîte API)
-- ✅ Offres personnalisées (Jooble API + scoring)
+- ✅ Candidatures spontanées (France Travail API)
+- ✅ Offres personnalisées (France Travail API + scoring)
 - ✅ 3 Plans (Gratuit/Pro/Ultra) avec crédits séparés
 - ✅ Graphique de progression (Chart.js)
+
+### Phase 3 - Branding & UX (2026-01-17)
+- ✅ Intégration du logo Joboost partout dans l'app
+  - Header/Navbar (Landing, Dashboard, Auth pages)
+  - Hero section (Landing page)
+  - Sidebar (Dashboard)
+  - Footer
+  - Pages de paiement (succès/erreur)
+  - Onboarding
+- ✅ Favicon et métadonnées OG pour partage social
+- ✅ Responsive logo sizing (mobile/tablet/desktop)
+- ✅ Animation fade-in sur le hero logo
 
 ## Prioritized Backlog
 
