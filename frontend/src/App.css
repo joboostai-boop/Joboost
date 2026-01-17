@@ -41,3 +41,32 @@
     transform: translateY(0);
   }
 }
+
+/* Loading Screen Animations */
+.animate-pulse-slow {
+  animation: pulseSlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 3s linear infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
