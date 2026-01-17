@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useAuth } from '../context/AuthContext';
 import { MarqueeLogos } from '../components/MarqueeLogos';
+import Logo from '../components/Logo';
 import { 
-  Briefcase, 
   FileText, 
   BarChart3, 
   Sparkles, 
@@ -90,12 +90,7 @@ const LandingPage = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-heading font-bold text-xl text-slate-900">Joboost</span>
-            </Link>
+            <Logo size="lg" href="/" />
             
             <div className="flex items-center gap-4">
               {isAuthenticated ? (
@@ -127,6 +122,10 @@ const LandingPage = () => {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto">
+            {/* Hero Logo */}
+            <div className="flex justify-center mb-8">
+              <Logo size="2xl" className="animate-fade-in" />
+            </div>
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight mb-6">
               Votre recherche d'emploi,{' '}
               <span className="text-sky-500">organisée et optimisée</span>
@@ -265,12 +264,7 @@ const LandingPage = () => {
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-100">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-heading font-bold text-xl text-slate-900">Joboost</span>
-            </div>
+            <Logo size="md" href="/" className="opacity-80 hover:opacity-100" />
             <p className="text-slate-500 text-sm">
               © {new Date().getFullYear()} Joboost. Tous droits réservés.
             </p>
