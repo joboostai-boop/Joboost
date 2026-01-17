@@ -170,7 +170,9 @@ const LoginPage = () => {
       <div className="hidden lg:flex flex-1 bg-slate-900 items-center justify-center p-12">
         <div className="max-w-md text-center">
           <div className="flex justify-center mb-8">
-            <Logo size="xl" className="filter brightness-0 invert" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+              <Logo size="lg" />
+            </div>
           </div>
           <h2 className="font-heading text-3xl font-bold text-white mb-4">
             Organisez votre recherche d'emploi
