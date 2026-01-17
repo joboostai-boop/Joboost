@@ -1,12 +1,13 @@
 /* ============================================
    MARQUEE LOGOS - Joboost Design System
-   Background BLANC partout (desktop + mobile)
+   Background BLANC FORCÉ partout
    ============================================ */
 
 .marquee-container {
   width: 100%;
   padding: 3rem 0;
-  background: #FFFFFF;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
   border-top: 1px solid #E2E8F0;
   border-bottom: 1px solid #E2E8F0;
   overflow: hidden;
@@ -18,6 +19,7 @@
   padding: 0 1rem;
   text-align: center;
   margin-bottom: 2rem;
+  background: transparent;
 }
 
 .marquee-title {
@@ -25,23 +27,16 @@
   font-size: 1.875rem;
   line-height: 2.25rem;
   font-weight: 700;
-  color: #0F172A;
+  color: #0F172A !important;
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.02em;
-}
-
-@media (max-width: 768px) {
-  .marquee-title {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
 }
 
 .marquee-subtitle {
   font-family: 'Manrope', sans-serif;
   font-size: 1rem;
   line-height: 1.5rem;
-  color: #64748B;
+  color: #64748B !important;
   margin: 0;
   font-weight: 400;
 }
@@ -54,7 +49,8 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: #FFFFFF;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
 }
 
 .marquee-track {
@@ -70,7 +66,8 @@
   animation: marquee-scroll var(--duration) linear infinite;
   will-change: transform;
   align-items: center;
-  background: #FFFFFF;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
   
   /* FIX MOBILE: Empêcher la sélection bleue sur iOS/Android */
   -webkit-user-select: none;
@@ -85,8 +82,9 @@
   gap: var(--gap);
   flex-shrink: 0;
   align-items: center;
+  background: transparent;
   
-  /* FIX MOBILE: Empêcher le drag par défaut */
+  /* FIX MOBILE */
   -webkit-user-select: none;
   user-select: none;
   pointer-events: none;
@@ -107,7 +105,6 @@
   flex-shrink: 0;
   text-decoration: none;
   
-  /* FIX MOBILE: Rendre les liens cliquables + pas de highlight */
   pointer-events: auto;
   -webkit-user-select: none;
   user-select: none;
@@ -143,7 +140,6 @@
 
 /* ============================================
    ANIMATION KEYFRAMES
-   4 SETS identiques = boucle parfaite
    ============================================ */
 
 @keyframes marquee-scroll {
@@ -156,28 +152,41 @@
 }
 
 /* ============================================
-   RESPONSIVE DESIGN
-   Background BLANC partout, écarts ÉGAUX
+   RESPONSIVE DESIGN - FOND BLANC FORCÉ
    ============================================ */
 
 @media (max-width: 1024px) {
+  .marquee-container {
+    padding: 2rem 0;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+  }
+
+  .marquee-track-wrapper {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+  }
+
   .marquee-track {
     --gap: 70px;
     --logo-width: 160px;
     --logo-height: 60px;
     --duration: 25s;
-  }
-
-  .marquee-container {
-    padding: 2rem 0;
-    background: #FFFFFF;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
   }
 }
 
 @media (max-width: 768px) {
   .marquee-container {
     padding: 2rem 0;
-    background: #FFFFFF;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+  }
+
+  .marquee-track-wrapper {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
   }
 
   .marquee-track {
@@ -186,11 +195,8 @@
     --logo-height: 50px;
     --duration: 20s;
     padding: 1.5rem var(--gap);
-    background: #FFFFFF;
-  }
-
-  .marquee-track-wrapper {
-    background: #FFFFFF;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
   }
 
   .marquee-content {
@@ -198,9 +204,16 @@
     margin-bottom: 1.5rem;
   }
 
+  .marquee-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    color: #0F172A !important;
+  }
+
   .marquee-subtitle {
     font-size: 0.875rem;
     line-height: 1.25rem;
+    color: #64748B !important;
   }
 
   .marquee-logo-box {
@@ -211,7 +224,13 @@
 @media (max-width: 480px) {
   .marquee-container {
     padding: 1.5rem 0;
-    background: #FFFFFF;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+  }
+
+  .marquee-track-wrapper {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
   }
 
   .marquee-track {
@@ -220,20 +239,19 @@
     --logo-height: 40px;
     --duration: 18s;
     padding: 1rem var(--gap);
-    background: #FFFFFF;
-  }
-
-  .marquee-track-wrapper {
-    background: #FFFFFF;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
   }
 
   .marquee-title {
     font-size: 1.25rem;
     line-height: 1.75rem;
+    color: #0F172A !important;
   }
 
   .marquee-subtitle {
     font-size: 0.8125rem;
+    color: #64748B !important;
   }
 }
 
@@ -256,28 +274,32 @@
 }
 
 /* ============================================
-   DARK MODE SUPPORT
+   DARK MODE - UNIQUEMENT VIA CLASSE .dark
+   (Pas de prefers-color-scheme pour éviter bug mobile)
    ============================================ */
 
 .dark .marquee-container {
-  background: #1E293B;
+  background-color: #1E293B !important;
+  background: #1E293B !important;
   border-color: #334155;
 }
 
 .dark .marquee-track-wrapper {
-  background: #1E293B;
+  background-color: #1E293B !important;
+  background: #1E293B !important;
 }
 
 .dark .marquee-track {
-  background: #1E293B;
+  background-color: #1E293B !important;
+  background: #1E293B !important;
 }
 
 .dark .marquee-title {
-  color: #F1F5F9;
+  color: #F1F5F9 !important;
 }
 
 .dark .marquee-subtitle {
-  color: #CBD5E1;
+  color: #CBD5E1 !important;
 }
 
 .dark .marquee-logo-box {
@@ -289,38 +311,4 @@
   border-color: #0EA5E9;
   background: #1E3A5F;
   box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
-}
-
-@media (prefers-color-scheme: dark) {
-  .marquee-container {
-    background: #1E293B;
-    border-color: #334155;
-  }
-
-  .marquee-track-wrapper {
-    background: #1E293B;
-  }
-
-  .marquee-track {
-    background: #1E293B;
-  }
-
-  .marquee-title {
-    color: #F1F5F9;
-  }
-
-  .marquee-subtitle {
-    color: #CBD5E1;
-  }
-
-  .marquee-logo-box {
-    background: #334155;
-    border-color: #475569;
-  }
-
-  .marquee-logo-box:hover {
-    border-color: #0EA5E9;
-    background: #1E3A5F;
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
-  }
 }
