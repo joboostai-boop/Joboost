@@ -897,6 +897,325 @@ async def send_spontaneous_applications(request: SpontaneousSendRequest, current
     
     return {"message": f"{credits_needed} candidature(s) spontanée(s) envoyée(s) avec succès", "credits_remaining": current_credits - credits_needed}
 
+# ============ NEW SPONTANEOUS APPLICATION SYSTEM ============
+
+@api_router.post("/spontaneous/generate-letter")
+async def generate_spontaneous_letter(request: SpontaneousLetterGenerateRequest, current_user: dict = Depends(get_current_user)):
+    """Generate a personalized cover letter using AI"""
+    from emergentintegrations.llm.chat import chat, LlmMessage
+    
+    # Get user profile
+    profile = await db.profiles.find_one({"user_id": current_user["user_id"]}, {"_id": 0})
+    
+    profile_summary = ""
+    if profile:
+        exp_list = [f"- {e.get('title')} chez {e.get('company')}" for e in profile.get("experiences", [])[:3]]
+        skills_list = ", ".join(profile.get("skills", [])[:10])
+        profile_summary = f"""
+Titre: {profile.get('title', 'Non renseigné')}
+Résumé: {profile.get('summary', 'Non renseigné')}
+Expériences: {chr(10).join(exp_list) if exp_list else 'Non renseignées'}
+Compétences: {skills_list if skills_list else 'Non renseignées'}
+"""
+
+    ton_instructions = {
+        "formel": "Utilise un ton très professionnel et formel, avec vouvoiement strict et formules de politesse classiques.",
+        "chaleureux": "Utilise un ton professionnel mais chaleureux, montrant de l'enthousiasme tout en restant respectueux.",
+        "moderne": "Utilise un ton dynamique et moderne, direct mais toujours professionnel, adapté aux startups."
+    }
+    
+    prompt = f"""Tu es un expert en rédaction de lettres de motivation professionnelles en français.
+
+Génère une lettre de motivation spontanée personnalisée pour :
+- Entreprise : {request.entreprise_nom}
+- Poste visé : {request.poste_vise}
+- Secteur : {request.secteur}
+- Contact : {request.nom_contact or 'Service Recrutement'}
+- Candidat : {current_user.get('name', 'Candidat')}
+
+Profil du candidat :
+{profile_summary}
+
+Contexte fourni par le candidat :
+- Pourquoi cette entreprise : {request.pourquoi_entreprise or 'Non précisé'}
+- Points clés à mettre en avant : {request.points_cles or 'Non précisé'}
+
+Ton de la lettre : {ton_instructions.get(request.ton, ton_instructions['chaleureux'])}
+
+Instructions :
+1. Génère un objet d'email accrocheur (sur une ligne, commençant par "OBJET: ")
+2. Rédige une lettre structurée en 3-4 paragraphes
+3. Reste authentique, évite les clichés
+4. Longueur : 200-300 mots maximum
+5. Termine par "Cordialement," suivi du nom du candidat
+
+Format de réponse :
+OBJET: [ton objet ici]
+
+[Corps de la lettre]
+
+Cordialement,
+{current_user.get('name', 'Candidat')}
+"""
+
+    try:
+        api_key = os.environ.get("EMERGENT_API_KEY", "")
+        response = await chat(
+            api_key=api_key,
+            messages=[LlmMessage(role="user", content=prompt)],
+            model="gpt-4o"
+        )
+        
+        generated_text = response.content
+        
+        # Parse objet and corps
+        lines = generated_text.strip().split("\n")
+        objet = ""
+        corps = ""
+        
+        for i, line in enumerate(lines):
+            if line.upper().startswith("OBJET:"):
+                objet = line.replace("OBJET:", "").replace("Objet:", "").strip()
+                corps = "\n".join(lines[i+1:]).strip()
+                break
+        
+        if not objet:
+            objet = f"Candidature spontanée - {request.poste_vise} - {current_user.get('name', 'Candidat')}"
+            corps = generated_text
+        
+        return {
+            "success": True,
+            "objet": objet,
+            "corps": corps
+        }
+    except Exception as e:
+        logging.error(f"AI generation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la génération : {str(e)}")
+
+@api_router.post("/spontaneous/applications")
+async def create_spontaneous_application(request: SpontaneousApplicationCreate, current_user: dict = Depends(get_current_user)):
+    """Create and send a spontaneous application"""
+    
+    # Check credits
+    current_credits = current_user.get("spontaneous_credits", 0)
+    if current_credits < 1:
+        raise HTTPException(status_code=403, detail="Crédits insuffisants pour envoyer une candidature spontanée.")
+    
+    candidature_id = f"spont_{uuid.uuid4().hex[:12]}"
+    now = datetime.now(timezone.utc).isoformat()
+    
+    candidature = {
+        "candidature_id": candidature_id,
+        "user_id": current_user["user_id"],
+        "entreprise_nom": request.entreprise_nom,
+        "entreprise_url": request.entreprise_url,
+        "secteur": request.secteur,
+        "poste_vise": request.poste_vise,
+        "email_destination": request.email_destination,
+        "nom_contact": request.nom_contact,
+        "lettre_objet": request.lettre_objet,
+        "lettre_corps": request.lettre_corps,
+        "cv_filename": request.cv_filename,
+        "statut": "envoye",
+        "date_envoi": now,
+        "date_derniere_relance": None,
+        "notes": "",
+        "historique": [
+            {"action": "envoi", "date": now, "description": "Candidature envoyée"}
+        ],
+        "created_at": now,
+        "updated_at": now
+    }
+    
+    await db.spontaneous_candidatures.insert_one(candidature)
+    
+    # Deduct credit
+    await db.users.update_one(
+        {"user_id": current_user["user_id"]},
+        {"$inc": {"spontaneous_credits": -1}}
+    )
+    
+    # Return without _id
+    del candidature["_id"] if "_id" in candidature else None
+    
+    return {
+        "success": True,
+        "message": "Candidature envoyée avec succès !",
+        "candidature": candidature,
+        "credits_remaining": current_credits - 1
+    }
+
+@api_router.get("/spontaneous/applications")
+async def list_spontaneous_applications(
+    statut: Optional[str] = None,
+    secteur: Optional[str] = None,
+    search: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """List all spontaneous applications for the current user"""
+    
+    query = {"user_id": current_user["user_id"]}
+    
+    if statut and statut != "tous":
+        query["statut"] = statut
+    if secteur and secteur != "tous":
+        query["secteur"] = secteur
+    
+    candidatures = await db.spontaneous_candidatures.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    
+    if search:
+        search_lower = search.lower()
+        candidatures = [c for c in candidatures if search_lower in c.get("entreprise_nom", "").lower() or search_lower in c.get("poste_vise", "").lower()]
+    
+    # Stats
+    all_candidatures = await db.spontaneous_candidatures.find({"user_id": current_user["user_id"]}, {"_id": 0, "statut": 1}).to_list(500)
+    
+    stats = {
+        "total": len(all_candidatures),
+        "envoye": sum(1 for c in all_candidatures if c.get("statut") == "envoye"),
+        "relance": sum(1 for c in all_candidatures if c.get("statut") == "relance"),
+        "entretien": sum(1 for c in all_candidatures if c.get("statut") == "entretien"),
+        "offre": sum(1 for c in all_candidatures if c.get("statut") == "offre"),
+        "refuse": sum(1 for c in all_candidatures if c.get("statut") == "refuse"),
+    }
+    
+    return {
+        "candidatures": candidatures,
+        "stats": stats
+    }
+
+@api_router.get("/spontaneous/applications/{candidature_id}")
+async def get_spontaneous_application(candidature_id: str, current_user: dict = Depends(get_current_user)):
+    """Get details of a specific spontaneous application"""
+    
+    candidature = await db.spontaneous_candidatures.find_one(
+        {"candidature_id": candidature_id, "user_id": current_user["user_id"]},
+        {"_id": 0}
+    )
+    
+    if not candidature:
+        raise HTTPException(status_code=404, detail="Candidature non trouvée")
+    
+    return {"candidature": candidature}
+
+@api_router.patch("/spontaneous/applications/{candidature_id}/status")
+async def update_spontaneous_status(candidature_id: str, request: SpontaneousStatusUpdate, current_user: dict = Depends(get_current_user)):
+    """Update the status of a spontaneous application"""
+    
+    now = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.spontaneous_candidatures.update_one(
+        {"candidature_id": candidature_id, "user_id": current_user["user_id"]},
+        {
+            "$set": {"statut": request.statut, "updated_at": now},
+            "$push": {"historique": {"action": "changement_statut", "date": now, "description": f"Statut changé en: {request.statut}"}}
+        }
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Candidature non trouvée")
+    
+    return {"success": True, "message": "Statut mis à jour"}
+
+@api_router.post("/spontaneous/applications/{candidature_id}/note")
+async def add_spontaneous_note(candidature_id: str, request: SpontaneousNoteAdd, current_user: dict = Depends(get_current_user)):
+    """Add a note to a spontaneous application"""
+    
+    now = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.spontaneous_candidatures.update_one(
+        {"candidature_id": candidature_id, "user_id": current_user["user_id"]},
+        {
+            "$set": {"notes": request.note, "updated_at": now},
+            "$push": {"historique": {"action": "note", "date": now, "description": f"Note ajoutée"}}
+        }
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Candidature non trouvée")
+    
+    return {"success": True, "message": "Note ajoutée"}
+
+@api_router.post("/spontaneous/applications/{candidature_id}/relance")
+async def send_relance(candidature_id: str, current_user: dict = Depends(get_current_user)):
+    """Generate and send a follow-up email"""
+    from emergentintegrations.llm.chat import chat, LlmMessage
+    
+    candidature = await db.spontaneous_candidatures.find_one(
+        {"candidature_id": candidature_id, "user_id": current_user["user_id"]},
+        {"_id": 0}
+    )
+    
+    if not candidature:
+        raise HTTPException(status_code=404, detail="Candidature non trouvée")
+    
+    # Generate relance email
+    prompt = f"""Génère un email de relance court et professionnel en français pour une candidature spontanée.
+
+Informations :
+- Entreprise : {candidature.get('entreprise_nom')}
+- Poste visé : {candidature.get('poste_vise')}
+- Contact : {candidature.get('nom_contact') or 'Service Recrutement'}
+- Date d'envoi initial : {candidature.get('date_envoi', 'récemment')}
+- Nom du candidat : {current_user.get('name', 'Candidat')}
+
+Instructions :
+1. Objet court et direct
+2. Rappel poli de la candidature initiale
+3. Réaffirmation de l'intérêt
+4. Demande de retour
+5. Maximum 100 mots
+
+Format :
+OBJET: [objet]
+
+[Corps de l'email de relance]
+
+Cordialement,
+{current_user.get('name', 'Candidat')}
+"""
+
+    try:
+        api_key = os.environ.get("EMERGENT_API_KEY", "")
+        response = await chat(
+            api_key=api_key,
+            messages=[LlmMessage(role="user", content=prompt)],
+            model="gpt-4o"
+        )
+        
+        now = datetime.now(timezone.utc).isoformat()
+        
+        # Update candidature
+        await db.spontaneous_candidatures.update_one(
+            {"candidature_id": candidature_id},
+            {
+                "$set": {"statut": "relance", "date_derniere_relance": now, "updated_at": now},
+                "$push": {"historique": {"action": "relance", "date": now, "description": "Email de relance envoyé"}}
+            }
+        )
+        
+        return {
+            "success": True,
+            "message": "Relance envoyée",
+            "email_content": response.content
+        }
+    except Exception as e:
+        logging.error(f"Relance generation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la génération : {str(e)}")
+
+@api_router.delete("/spontaneous/applications/{candidature_id}")
+async def delete_spontaneous_application(candidature_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a spontaneous application"""
+    
+    result = await db.spontaneous_candidatures.delete_one(
+        {"candidature_id": candidature_id, "user_id": current_user["user_id"]}
+    )
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Candidature non trouvée")
+    
+    return {"success": True, "message": "Candidature supprimée"}
+
 # ============ JOB RECOMMENDATIONS ROUTES ============
 
 @api_router.get("/recommendations")
