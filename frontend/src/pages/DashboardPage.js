@@ -343,66 +343,8 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Sidebar Principale */}
-      <aside className={`fixed lg:sticky top-0 left-0 z-40 w-64 h-screen bg-white border-r border-slate-200 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-slate-100">
-            <Logo size="lg" href="/dashboard" />
-          </div>
-
-          <nav className="flex-1 p-4 space-y-1">
-            <Link to="/dashboard" className="sidebar-link active">
-              <Home className="w-5 h-5" />
-              Dashboard
-            </Link>
-            <Link to="/spontaneous" className="sidebar-link">
-              <Send className="w-5 h-5" />
-              Candidatures spontanées
-            </Link>
-            <Link to="/profile" className="sidebar-link">
-              <User className="w-5 h-5" />
-              Mon Profil
-            </Link>
-            <Link to="/pricing" className="sidebar-link">
-              <Sparkles className="w-5 h-5" />
-              Plans & Tarifs
-            </Link>
-            <Link to="/settings" className="sidebar-link">
-              <Settings className="w-5 h-5" />
-              Paramètres
-            </Link>
-          </nav>
-
-          <div className="p-4 border-t border-slate-100">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 font-semibold">
-                {user?.name?.charAt(0) || 'U'}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-slate-900 truncate">{user?.name}</p>
-                <p className="text-sm text-slate-500 truncate">{user?.email}</p>
-              </div>
-            </div>
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-slate-600 hover:text-red-600"
-              onClick={handleLogout}
-              data-testid="logout-btn"
-            >
-              <LogOut className="w-5 h-5 mr-2" />
-              Déconnexion
-            </Button>
-          </div>
-        </div>
-      </aside>
-
-      {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {/* Sidebar Navigation */}
+      <Sidebar user={user} onLogout={handleLogout} />
 
       {/* Panneau Offres Personnalisées (visible sur grand écran) */}
       <OffersPanel 
