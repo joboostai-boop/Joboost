@@ -15,6 +15,7 @@ import {
 } from '../components/ui/dialog';
 import { toast } from 'sonner';
 import Logo from '../components/Logo';
+import OffersPanel from '../components/OffersPanel';
 import { 
   Plus, 
   Search, 
@@ -37,7 +38,8 @@ import {
   Send,
   FileText,
   TrendingUp,
-  Briefcase
+  Briefcase,
+  Home
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
