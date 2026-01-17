@@ -166,6 +166,7 @@ const DashboardPage = () => {
   const [timeline, setTimeline] = useState([]);
   const [offers, setOffers] = useState([]);
   const [offersLoading, setOffersLoading] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState(null);
   const [newApp, setNewApp] = useState({
     company_name: '',
     job_title: '',
