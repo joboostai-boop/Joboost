@@ -535,26 +535,6 @@ const DashboardPage = () => {
           </div>
         )}
 
-        {/* Personalized Offers */}
-        {offers.length > 0 && (
-          <div className="px-4 lg:px-8 pb-6">
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-sky-500" />
-                  <h3 className="font-heading font-semibold text-slate-900">Offres personnalisées</h3>
-                </div>
-                <span className="text-sm text-slate-500">Basées sur votre profil</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {offers.slice(0, 6).map((offer, index) => (
-                  <OfferCard key={index} offer={offer} />
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Content */}
         <div className="px-4 lg:px-8 pb-8">
           {viewMode === 'kanban' ? (
