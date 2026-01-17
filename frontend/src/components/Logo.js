@@ -2,28 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Logo Joboost - Composant haute qualité avec tailles optimisées
+ * Logo Joboost - Tailles EXTRA LARGES pour visibilité maximale
  * 
  * GUIDE DES TAILLES (Mobile → Tablet → Desktop)
  * ═══════════════════════════════════════════════════════════════
  * Size  │ Mobile    │ Tablet    │ Desktop   │ Usage
  * ═══════════════════════════════════════════════════════════════
- * xs    │ 36px      │ 40px      │ 44px      │ Modals, notifications
- * sm    │ 44px      │ 52px      │ 60px      │ Footer, menu compact
- * md    │ 56px      │ 64px      │ 72px      │ Sidebar
- * lg    │ 68px      │ 80px      │ 92px      │ Header/Navbar ⭐
- * xl    │ 80px      │ 100px     │ 120px     │ Auth pages
- * 2xl   │ 100px     │ 130px     │ 160px     │ Hero, pages erreur
+ * xs    │ 48px      │ 56px      │ 64px      │ Modals, notifications
+ * sm    │ 60px      │ 72px      │ 84px      │ Footer
+ * md    │ 72px      │ 88px      │ 100px     │ Sidebar
+ * lg    │ 88px      │ 110px     │ 130px     │ Header/Navbar ⭐
+ * xl    │ 110px     │ 140px     │ 170px     │ Auth pages
+ * 2xl   │ 140px     │ 180px     │ 220px     │ Hero, pages erreur
  * ═══════════════════════════════════════════════════════════════
  */
 
 const SIZE_CLASSES = {
-  xs: 'h-9 sm:h-10 md:h-11',                    // 36 → 40 → 44
-  sm: 'h-11 sm:h-[52px] md:h-[60px]',           // 44 → 52 → 60
-  md: 'h-14 sm:h-16 md:h-[72px]',               // 56 → 64 → 72
-  lg: 'h-[68px] sm:h-20 md:h-[92px]',           // 68 → 80 → 92 ⭐ HEADER
-  xl: 'h-20 sm:h-[100px] md:h-[120px]',         // 80 → 100 → 120
-  '2xl': 'h-[100px] sm:h-[130px] md:h-[160px]', // 100 → 130 → 160
+  xs: 'h-12 sm:h-14 md:h-16',                     // 48 → 56 → 64
+  sm: 'h-[60px] sm:h-[72px] md:h-[84px]',         // 60 → 72 → 84
+  md: 'h-[72px] sm:h-[88px] md:h-[100px]',        // 72 → 88 → 100
+  lg: 'h-[88px] sm:h-[110px] md:h-[130px]',       // 88 → 110 → 130 ⭐ HEADER
+  xl: 'h-[110px] sm:h-[140px] md:h-[170px]',      // 110 → 140 → 170
+  '2xl': 'h-[140px] sm:h-[180px] md:h-[220px]',   // 140 → 180 → 220
 };
 
 export const Logo = ({
@@ -37,12 +37,12 @@ export const Logo = ({
   
   // Tailles fixes pour mode non-responsive
   const fixedHeights = {
-    xs: 44,
-    sm: 60,
-    md: 72,
-    lg: 92,
-    xl: 120,
-    '2xl': 160,
+    xs: 64,
+    sm: 84,
+    md: 100,
+    lg: 130,
+    xl: 170,
+    '2xl': 220,
   };
 
   const logoElement = (
@@ -52,9 +52,8 @@ export const Logo = ({
         alt="Joboost - CRM de Carrière"
         className={`object-contain w-auto ${responsive ? sizeClasses : ''}`}
         style={{
-          ...(responsive ? {} : { height: `${fixedHeights[size] || 92}px` }),
+          ...(responsive ? {} : { height: `${fixedHeights[size] || 130}px` }),
           imageRendering: 'auto',
-          WebkitFontSmoothing: 'antialiased',
         }}
         data-testid="logo-image"
       />
