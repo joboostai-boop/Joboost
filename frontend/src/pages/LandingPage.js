@@ -20,7 +20,7 @@ const LandingPage = () => {
 
   const features = [
     {
-      icon: <Kanban className="w-6 h-6" />,
+      icon: <LayoutGrid className="w-6 h-6" />,
       title: "Vue Kanban intuitive",
       description: "Organisez vos candidatures avec un tableau de bord visuel de type drag & drop."
     },
