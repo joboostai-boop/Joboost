@@ -1,16 +1,12 @@
 /* ============================================
    MARQUEE LOGOS - Joboost Design System
-   Animation infinie avec espacement uniforme
+   Background BLANC partout (desktop + mobile)
    ============================================ */
 
 .marquee-container {
   width: 100%;
   padding: 3rem 0;
-  background: linear-gradient(
-    to bottom,
-    #FFFFFF 0%,
-    #F8FAFC 100%
-  );
+  background: #FFFFFF;
   border-top: 1px solid #E2E8F0;
   border-bottom: 1px solid #E2E8F0;
   overflow: hidden;
@@ -65,17 +61,23 @@
   --gap: 80px;
   --logo-width: 190px;
   --logo-height: 70px;
-  --duration: 25s;
-  /* Calcul: 4 logos par set, déplacement = 1 set complet */
-  --set-width: calc((var(--logo-width) + var(--gap)) * 4);
+  --duration: 30s;
 
   display: flex;
   gap: var(--gap);
   width: max-content;
-  padding: 2rem 0;
+  padding: 2rem var(--gap);
   animation: marquee-scroll var(--duration) linear infinite;
   will-change: transform;
   align-items: center;
+  background: #FFFFFF;
+  
+  /* FIX MOBILE: Empêcher la sélection bleue sur iOS/Android */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .marquee-set {
@@ -83,6 +85,12 @@
   gap: var(--gap);
   flex-shrink: 0;
   align-items: center;
+  
+  /* FIX MOBILE: Empêcher le drag par défaut */
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .marquee-logo-box {
@@ -98,6 +106,12 @@
   cursor: pointer;
   flex-shrink: 0;
   text-decoration: none;
+  
+  /* FIX MOBILE: Rendre les liens cliquables + pas de highlight */
+  pointer-events: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .marquee-logo-box:hover {
@@ -119,6 +133,8 @@
   display: block;
   opacity: 0.85;
   transition: opacity 200ms ease-in-out;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .marquee-logo-box:hover .marquee-logo {
@@ -127,8 +143,7 @@
 
 /* ============================================
    ANIMATION KEYFRAMES
-   Déplace exactement 1 set (4 logos + gaps)
-   pour une boucle parfaite sans saccade
+   4 SETS identiques = boucle parfaite
    ============================================ */
 
 @keyframes marquee-scroll {
@@ -136,13 +151,13 @@
     transform: translateX(0);
   }
   100% {
-    /* Déplacement = largeur d'un set complet + 1 gap final */
-    transform: translateX(calc(-1 * var(--set-width)));
+    transform: translateX(calc(-1 * (var(--logo-width) + var(--gap)) * 4));
   }
 }
 
 /* ============================================
    RESPONSIVE DESIGN
+   Background BLANC partout, écarts ÉGAUX
    ============================================ */
 
 @media (max-width: 1024px) {
@@ -150,21 +165,32 @@
     --gap: 70px;
     --logo-width: 160px;
     --logo-height: 60px;
-    --duration: 22s;
+    --duration: 25s;
   }
 
   .marquee-container {
     padding: 2rem 0;
+    background: #FFFFFF;
   }
 }
 
 @media (max-width: 768px) {
+  .marquee-container {
+    padding: 2rem 0;
+    background: #FFFFFF;
+  }
+
   .marquee-track {
     --gap: 50px;
     --logo-width: 140px;
     --logo-height: 50px;
     --duration: 20s;
-    padding: 1.5rem 0;
+    padding: 1.5rem var(--gap);
+    background: #FFFFFF;
+  }
+
+  .marquee-track-wrapper {
+    background: #FFFFFF;
   }
 
   .marquee-content {
@@ -183,12 +209,22 @@
 }
 
 @media (max-width: 480px) {
+  .marquee-container {
+    padding: 1.5rem 0;
+    background: #FFFFFF;
+  }
+
   .marquee-track {
     --gap: 30px;
     --logo-width: 110px;
     --logo-height: 40px;
     --duration: 18s;
-    padding: 1rem 0;
+    padding: 1rem var(--gap);
+    background: #FFFFFF;
+  }
+
+  .marquee-track-wrapper {
+    background: #FFFFFF;
   }
 
   .marquee-title {
@@ -199,14 +235,10 @@
   .marquee-subtitle {
     font-size: 0.8125rem;
   }
-
-  .marquee-container {
-    padding: 1.5rem 0;
-  }
 }
 
 /* ============================================
-   ACCESSIBILITY & PREFERS REDUCED MOTION
+   ACCESSIBILITY
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -228,15 +260,15 @@
    ============================================ */
 
 .dark .marquee-container {
-  background: linear-gradient(
-    to bottom,
-    #0F172A 0%,
-    #1E293B 100%
-  );
+  background: #1E293B;
   border-color: #334155;
 }
 
 .dark .marquee-track-wrapper {
+  background: #1E293B;
+}
+
+.dark .marquee-track {
   background: #1E293B;
 }
 
@@ -261,15 +293,15 @@
 
 @media (prefers-color-scheme: dark) {
   .marquee-container {
-    background: linear-gradient(
-      to bottom,
-      #0F172A 0%,
-      #1E293B 100%
-    );
+    background: #1E293B;
     border-color: #334155;
   }
 
   .marquee-track-wrapper {
+    background: #1E293B;
+  }
+
+  .marquee-track {
     background: #1E293B;
   }
 
