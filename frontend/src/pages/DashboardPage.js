@@ -156,7 +156,6 @@ const DashboardPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [timeline, setTimeline] = useState([]);
   const [offers, setOffers] = useState([]);
   const [offersLoading, setOffersLoading] = useState(false);
