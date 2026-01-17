@@ -346,14 +346,6 @@ const DashboardPage = () => {
       {/* Sidebar Navigation */}
       <Sidebar user={user} onLogout={handleLogout} />
 
-      {/* Panneau Offres Personnalisées (visible sur grand écran) */}
-      <OffersPanel 
-        offers={offers} 
-        loading={offersLoading}
-        selectedOffer={selectedOffer}
-        onSelectOffer={setSelectedOffer}
-      />
-
       {/* Main Content */}
       <main className="flex-1 min-w-0 lg:ml-0">
         {/* Header */}
