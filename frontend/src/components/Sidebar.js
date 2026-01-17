@@ -34,16 +34,10 @@ const NAV_ITEMS = [
     description: 'Offres matchées par IA'
   },
   { 
-    path: '/generer-cv', 
-    label: 'Générer un CV', 
+    path: '/generer', 
+    label: 'Générer CV & Lettre', 
     icon: FileText,
-    description: 'Création de CV IA'
-  },
-  { 
-    path: '/generer-lettre', 
-    label: 'Générer une lettre', 
-    icon: Mail,
-    description: 'Lettre de motivation IA'
+    description: 'Création de documents IA'
   },
   { 
     path: '/spontaneous', 
