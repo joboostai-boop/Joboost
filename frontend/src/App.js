@@ -135,18 +135,10 @@ function AppRouter() {
         }
       />
       <Route
-        path="/generer-cv"
+        path="/generer"
         element={
           <ProtectedRoute>
-            <GeneratorPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/generer-lettre"
-        element={
-          <ProtectedRoute>
-            <GeneratorPage />
+            <GeneratePage />
           </ProtectedRoute>
         }
       />
