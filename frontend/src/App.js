@@ -17,6 +17,7 @@ import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import SettingsPage from './pages/SettingsPage';
 import GeneratorPage from './pages/GeneratorPage';
 import SpontaneousPage from './pages/SpontaneousPage';
+import OffresPage from './pages/OffresPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
 
