@@ -55,22 +55,30 @@ Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le mar
 
 ### P0 - Critical
 - [ ] PayPal intégration (alternative paiement)
+- [ ] Vérifier/fixer la persistance de session après rechargement
 
 ### P1 - High Priority  
 - [ ] LinkedIn OAuth
 - [ ] Notifications email deadlines
 - [ ] Mode Focus amélioré pour rédaction
+- [ ] Flux de réinitialisation de mot de passe
 
 ### P2 - Medium Priority
 - [ ] Statistiques avancées
 - [ ] Import CV existant
 - [ ] Partage de profil public
+- [ ] Éditeur de texte riche pour révision IA
+
+### P3 - Low Priority
+- [ ] Protection CSRF renforcée
+- [ ] Authentification à deux facteurs
 
 ## Files Structure
 ```
 /app/backend/
 ├── server.py (main API)
 ├── lib/
+│   ├── francetravail_oauth.py (France Travail OAuth2)
 │   ├── labonneboite.py (spontaneous search)
 │   └── jobs_api.py (job recommendations)
 └── .env
@@ -79,10 +87,27 @@ Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le mar
 ├── pages/ (10 pages)
 ├── components/
 │   ├── ui/ (Shadcn)
+│   ├── Logo.js (Composant Logo réutilisable)
+│   ├── MarqueeLogos/ (Carrousel partenaires)
 │   ├── OfferCard.js
 │   └── ProgressChart.js
 ├── context/AuthContext.js
 └── lib/api.js
+
+/app/frontend/public/
+├── images/logo.png (Logo Joboost principal)
+├── favicon.ico
+└── index.html (avec meta OG)
+```
+
+## Logo Component Usage
+```jsx
+import Logo from '../components/Logo';
+
+// Sizes: xs (24px), sm (32px), md (40px), lg (50px), xl (80px), 2xl (100px)
+<Logo size="lg" href="/" />           // With link
+<Logo size="md" />                     // Without link
+<Logo size="xl" className="mb-8" />   // With custom class
 ```
 
 ## Environment Variables
