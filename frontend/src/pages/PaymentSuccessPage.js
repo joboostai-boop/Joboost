@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { paymentsAPI } from '../lib/api';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
+import Logo from '../components/Logo';
 import { CheckCircle2, Loader2, XCircle, Sparkles } from 'lucide-react';
 
 const PaymentSuccessPage = () => {
@@ -58,7 +59,12 @@ const PaymentSuccessPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+      {/* Logo en haut */}
+      <div className="mb-8">
+        <Logo size="xl" href="/" />
+      </div>
+      
       <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200 shadow-lg p-8 text-center">
         {status === 'loading' && (
           <>
