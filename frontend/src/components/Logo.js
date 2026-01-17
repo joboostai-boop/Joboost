@@ -32,7 +32,7 @@ export const Logo = ({
   const logoElement = (
     <div className={`flex items-center gap-2 ${className}`}>
       <img
-        src="/images/logo.jpg"
+        src="/images/logo.svg"
         alt="Joboost - CRM de Carrière"
         height={heightSize}
         className="object-contain"
