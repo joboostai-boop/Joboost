@@ -1036,7 +1036,7 @@ async def create_spontaneous_application(request: SpontaneousApplicationCreate, 
     )
     
     # Return without _id
-    del candidature["_id"] if "_id" in candidature else None
+    candidature.pop("_id", None)
     
     return {
         "success": True,
