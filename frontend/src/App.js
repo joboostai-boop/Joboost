@@ -126,6 +126,30 @@ function AppRouter() {
         }
       />
       <Route
+        path="/offres"
+        element={
+          <ProtectedRoute>
+            <OffresPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/generer-cv"
+        element={
+          <ProtectedRoute>
+            <GeneratorPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/generer-lettre"
+        element={
+          <ProtectedRoute>
+            <GeneratorPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/generator/:applicationId"
         element={
           <ProtectedRoute>
