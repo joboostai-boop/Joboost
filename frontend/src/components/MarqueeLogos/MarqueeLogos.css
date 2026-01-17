@@ -1,5 +1,6 @@
 /* ============================================
    MARQUEE LOGOS - Joboost Design System
+   Animation infinie avec espacement uniforme
    ============================================ */
 
 .marquee-container {
@@ -61,10 +62,12 @@
 }
 
 .marquee-track {
-  --gap: 130px;
+  --gap: 80px;
   --logo-width: 190px;
   --logo-height: 70px;
-  --duration: 30s;
+  --duration: 25s;
+  /* Calcul: 4 logos par set, déplacement = 1 set complet */
+  --set-width: calc((var(--logo-width) + var(--gap)) * 4);
 
   display: flex;
   gap: var(--gap);
@@ -78,7 +81,6 @@
 .marquee-set {
   display: flex;
   gap: var(--gap);
-  padding-right: var(--gap);
   flex-shrink: 0;
   align-items: center;
 }
@@ -125,14 +127,17 @@
 
 /* ============================================
    ANIMATION KEYFRAMES
+   Déplace exactement 1 set (4 logos + gaps)
+   pour une boucle parfaite sans saccade
    ============================================ */
 
 @keyframes marquee-scroll {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
-    transform: translateX(-25%);
+  100% {
+    /* Déplacement = largeur d'un set complet + 1 gap final */
+    transform: translateX(calc(-1 * var(--set-width)));
   }
 }
 
@@ -142,10 +147,10 @@
 
 @media (max-width: 1024px) {
   .marquee-track {
-    --gap: 100px;
+    --gap: 70px;
     --logo-width: 160px;
     --logo-height: 60px;
-    --duration: 25s;
+    --duration: 22s;
   }
 
   .marquee-container {
@@ -155,7 +160,7 @@
 
 @media (max-width: 768px) {
   .marquee-track {
-    --gap: 60px;
+    --gap: 50px;
     --logo-width: 140px;
     --logo-height: 50px;
     --duration: 20s;
@@ -179,7 +184,7 @@
 
 @media (max-width: 480px) {
   .marquee-track {
-    --gap: 40px;
+    --gap: 30px;
     --logo-width: 110px;
     --logo-height: 40px;
     --duration: 18s;
@@ -219,7 +224,7 @@
 }
 
 /* ============================================
-   DARK MODE SUPPORT (optional)
+   DARK MODE SUPPORT
    ============================================ */
 
 .dark .marquee-container {
@@ -252,4 +257,38 @@
   border-color: #0EA5E9;
   background: #1E3A5F;
   box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .marquee-container {
+    background: linear-gradient(
+      to bottom,
+      #0F172A 0%,
+      #1E293B 100%
+    );
+    border-color: #334155;
+  }
+
+  .marquee-track-wrapper {
+    background: #1E293B;
+  }
+
+  .marquee-title {
+    color: #F1F5F9;
+  }
+
+  .marquee-subtitle {
+    color: #CBD5E1;
+  }
+
+  .marquee-logo-box {
+    background: #334155;
+    border-color: #475569;
+  }
+
+  .marquee-logo-box:hover {
+    border-color: #0EA5E9;
+    background: #1E3A5F;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+  }
 }
