@@ -128,6 +128,37 @@ class CheckoutRequest(BaseModel):
     plan: str
     origin_url: str
 
+# ============ SPONTANEOUS APPLICATION MODELS ============
+
+class SpontaneousApplicationCreate(BaseModel):
+    entreprise_nom: str
+    entreprise_url: Optional[str] = None
+    secteur: str
+    poste_vise: str
+    email_destination: EmailStr
+    nom_contact: Optional[str] = None
+    lettre_objet: str
+    lettre_corps: str
+    cv_filename: Optional[str] = None
+
+class SpontaneousLetterGenerateRequest(BaseModel):
+    entreprise_nom: str
+    poste_vise: str
+    secteur: str
+    nom_contact: Optional[str] = None
+    pourquoi_entreprise: Optional[str] = None
+    points_cles: Optional[str] = None
+    ton: str = "chaleureux"  # formel, chaleureux, moderne
+
+class SpontaneousRelanceRequest(BaseModel):
+    candidature_id: str
+
+class SpontaneousStatusUpdate(BaseModel):
+    statut: str  # envoye, relance, entretien, offre, refuse, sans_reponse
+
+class SpontaneousNoteAdd(BaseModel):
+    note: str
+
 # ============ AUTH HELPERS ============
 
 def create_access_token(data: dict) -> str:
