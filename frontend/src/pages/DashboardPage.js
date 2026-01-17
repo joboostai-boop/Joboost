@@ -355,19 +355,13 @@ const DashboardPage = () => {
       />
 
       {/* Main Content */}
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 lg:ml-0">
         {/* Header */}
         <header className="sticky top-0 z-20 bg-white border-b border-slate-200 px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="lg:hidden"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
+              {/* Espace pour le bouton menu mobile */}
+              <div className="w-11 lg:hidden" />
               <h1 className="font-heading text-xl lg:text-2xl font-bold text-slate-900">
                 Mes candidatures
               </h1>
