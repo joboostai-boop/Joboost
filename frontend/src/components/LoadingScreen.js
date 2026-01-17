@@ -12,7 +12,7 @@ const LoadingScreen = ({ message = 'Chargement...' }) => {
         {/* Logo with pulse animation */}
         <div className="animate-pulse-slow">
           <img
-            src="/images/logo.jpg"
+            src="/images/logo.svg"
             alt="Joboost"
             className="h-20 w-auto object-contain"
           />
