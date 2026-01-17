@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import LoadingScreen from './components/LoadingScreen';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -16,6 +17,8 @@ import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import SettingsPage from './pages/SettingsPage';
 import GeneratorPage from './pages/GeneratorPage';
 import SpontaneousPage from './pages/SpontaneousPage';
+import NotFoundPage from './pages/NotFoundPage';
+import ErrorPage from './pages/ErrorPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -23,14 +26,7 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-slate-200"></div>
-          <p className="text-slate-500">Chargement...</p>
-        </div>
-      </div>
-    );
+    return <LoadingScreen message="Vérification de votre session..." />;
   }
 
   if (!isAuthenticated) {
@@ -45,14 +41,7 @@ const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-slate-200"></div>
-          <p className="text-slate-500">Chargement...</p>
-        </div>
-      </div>
-    );
+    return <LoadingScreen message="Chargement..." />;
   }
 
   if (isAuthenticated) {
@@ -152,8 +141,9 @@ function AppRouter() {
         }
       />
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* Fallback - 404 Page */}
+      <Route path="/error" element={<ErrorPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
