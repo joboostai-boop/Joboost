@@ -147,33 +147,11 @@ const LandingPage = () => {
               </Link>
             </div>
           </div>
-
-          {/* Dashboard Preview */}
-          <div className="mt-16 relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
-              <div className="bg-slate-100 px-4 py-3 flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-amber-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-              </div>
-              <div className="p-6 grid grid-cols-4 gap-4">
-                {['À faire', 'Postulé', 'Entretien', 'Offre'].map((col, i) => (
-                  <div key={col} className="bg-white rounded-lg p-4 border border-slate-200">
-                    <h3 className="font-semibold text-slate-700 mb-3">{col}</h3>
-                    {[...Array(i === 1 ? 3 : i === 2 ? 2 : 1)].map((_, j) => (
-                      <div key={j} className="bg-slate-50 rounded p-3 mb-2 border border-slate-100">
-                        <div className="h-3 bg-slate-200 rounded w-3/4 mb-2" />
-                        <div className="h-2 bg-slate-100 rounded w-1/2" />
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
+
+      {/* Partners Marquee */}
+      <MarqueeLogos />
 
       {/* Features Section */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
