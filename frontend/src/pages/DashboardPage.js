@@ -14,19 +14,15 @@ import {
   DialogFooter
 } from '../components/ui/dialog';
 import { toast } from 'sonner';
-import Logo from '../components/Logo';
+import Sidebar from '../components/Sidebar';
 import OffersPanel from '../components/OffersPanel';
 import { 
   Plus, 
   Search, 
   LayoutGrid, 
   List,
-  Settings,
-  User,
-  LogOut,
   Building2,
   MapPin,
-  Calendar,
   ExternalLink,
   Sparkles,
   Trash2,
@@ -34,12 +30,10 @@ import {
   BarChart3,
   Loader2,
   ChevronDown,
-  Menu,
-  Send,
   FileText,
   TrendingUp,
   Briefcase,
-  Home
+  Send
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
