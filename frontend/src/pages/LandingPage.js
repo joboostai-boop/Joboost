@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useAuth } from '../context/AuthContext';
+import { MarqueeLogos } from '../components/MarqueeLogos';
 import { 
   Briefcase, 
   FileText, 
@@ -9,7 +10,7 @@ import {
   Sparkles, 
   Check,
   ArrowRight,
-  Kanban,
+  LayoutGrid,
   Target,
   Zap
 } from 'lucide-react';
