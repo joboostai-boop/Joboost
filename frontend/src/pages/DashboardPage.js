@@ -14,8 +14,8 @@ import {
   DialogFooter
 } from '../components/ui/dialog';
 import { toast } from 'sonner';
+import Logo from '../components/Logo';
 import { 
-  Briefcase, 
   Plus, 
   Search, 
   LayoutGrid, 
@@ -29,16 +29,15 @@ import {
   ExternalLink,
   Sparkles,
   Trash2,
-  Edit,
   GripVertical,
   BarChart3,
   Loader2,
   ChevronDown,
   Menu,
-  X,
   Send,
   FileText,
-  TrendingUp
+  TrendingUp,
+  Briefcase
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -352,12 +351,7 @@ const DashboardPage = () => {
       <aside className={`fixed lg:sticky top-0 left-0 z-40 w-64 h-screen bg-white border-r border-slate-200 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-slate-100">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-heading font-bold text-xl text-slate-900">Joboost</span>
-            </Link>
+            <Logo size="lg" href="/dashboard" />
           </div>
 
           <nav className="flex-1 p-4 space-y-1">
