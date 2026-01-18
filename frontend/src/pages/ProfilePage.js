@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { profileAPI } from '../lib/api';
+import AppLayout from '../components/AppLayout';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -9,7 +10,6 @@ import { Textarea } from '../components/ui/textarea';
 import { toast } from 'sonner';
 import {
   Briefcase,
-  ArrowLeft,
   User,
   GraduationCap,
   Wrench,
@@ -19,7 +19,8 @@ import {
   Loader2,
   Save,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  CheckCircle
 } from 'lucide-react';
 
 const ProfilePage = () => {
@@ -186,15 +187,23 @@ const ProfilePage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
-      </div>
-    );
-  }
+  // Calculate profile completion
+  const calculateCompletion = () => {
+    let score = 0;
+    if (profile.title) score += 15;
+    if (profile.summary) score += 15;
+    if (profile.phone) score += 10;
+    if (profile.location) score += 10;
+    if (profile.experiences?.length > 0) score += 20;
+    if (profile.education?.length > 0) score += 15;
+    if (profile.skills?.length > 0) score += 10;
+    if (profile.languages?.length > 0) score += 5;
+    return score;
+  };
 
-  const SectionHeader = ({ icon: Icon, title, section }) => (
+  const completion = calculateCompletion();
+
+  const SectionHeader = ({ icon: Icon, title, section, count }) => (
     <button
       onClick={() => toggleSection(section)}
       className="w-full flex items-center justify-between p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
@@ -202,6 +211,9 @@ const ProfilePage = () => {
       <div className="flex items-center gap-3">
         <Icon className="w-5 h-5 text-slate-600" />
         <span className="font-heading font-semibold text-slate-900">{title}</span>
+        {count !== undefined && (
+          <span className="text-sm text-slate-500">({count})</span>
+        )}
       </div>
       {expandedSections[section] ? (
         <ChevronUp className="w-5 h-5 text-slate-400" />
@@ -211,46 +223,70 @@ const ProfilePage = () => {
     </button>
   );
 
-  return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="sticky top-0 z-20 bg-white border-b border-slate-200 px-4 lg:px-8 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/dashboard')}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <div>
-              <h1 className="font-heading text-xl font-bold text-slate-900">Mon Profil Maître</h1>
-              <p className="text-sm text-slate-500">Vos informations pour la génération IA</p>
-            </div>
-          </div>
-          
-          <Button
-            onClick={handleSave}
-            disabled={saving}
-            className="btn-primary"
-            data-testid="save-profile-btn"
-          >
-            {saving ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Enregistrement...
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                Enregistrer
-              </>
-            )}
-          </Button>
-        </div>
-      </header>
+  const headerActions = (
+    <Button
+      onClick={handleSave}
+      disabled={saving}
+      className="btn-primary"
+      data-testid="save-profile-btn"
+    >
+      {saving ? (
+        <>
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          Enregistrement...
+        </>
+      ) : (
+        <>
+          <Save className="w-4 h-4 mr-2" />
+          Enregistrer
+        </>
+      )}
+    </Button>
+  );
 
-      <div className="max-w-4xl mx-auto py-8 px-4 lg:px-8 space-y-6">
+  if (loading) {
+    return (
+      <AppLayout title="Mon profil" headerActions={headerActions}>
+        <div className="flex items-center justify-center h-[60vh]">
+          <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout 
+      title="Mon profil" 
+      subtitle="Vos informations pour la génération IA"
+      headerActions={headerActions}
+    >
+      <div className="p-4 lg:p-8 space-y-6 max-w-4xl">
+        {/* Profile Completion */}
+        <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              {completion === 100 ? (
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+              ) : (
+                <User className="w-5 h-5 text-slate-500" />
+              )}
+              <span className="font-medium text-slate-900">Complétion du profil</span>
+            </div>
+            <span className={`text-sm font-semibold ${completion === 100 ? 'text-emerald-600' : 'text-sky-600'}`}>
+              {completion}%
+            </span>
+          </div>
+          <div className="w-full bg-slate-100 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full transition-all ${completion === 100 ? 'bg-emerald-500' : 'bg-sky-500'}`}
+              style={{ width: `${completion}%` }}
+            />
+          </div>
+          <p className="text-sm text-slate-500 mt-2">
+            Un profil complet améliore la pertinence de vos CV et lettres générés par l'IA.
+          </p>
+        </div>
+
         {/* Info Section */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
           <SectionHeader icon={User} title="Informations personnelles" section="info" />
@@ -273,7 +309,7 @@ const ProfilePage = () => {
                   rows={4}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Téléphone</Label>
                   <Input
@@ -291,7 +327,7 @@ const ProfilePage = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>LinkedIn</Label>
                   <Input
@@ -315,7 +351,12 @@ const ProfilePage = () => {
 
         {/* Experiences Section */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <SectionHeader icon={Briefcase} title="Expériences professionnelles" section="experiences" />
+          <SectionHeader 
+            icon={Briefcase} 
+            title="Expériences professionnelles" 
+            section="experiences"
+            count={profile.experiences?.length || 0}
+          />
           {expandedSections.experiences && (
             <div className="p-6 space-y-4">
               {profile.experiences?.map((exp, index) => (
@@ -331,7 +372,7 @@ const ProfilePage = () => {
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Poste</Label>
                       <Input
@@ -349,7 +390,7 @@ const ProfilePage = () => {
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Date de début</Label>
                       <Input
@@ -398,7 +439,12 @@ const ProfilePage = () => {
 
         {/* Education Section */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <SectionHeader icon={GraduationCap} title="Formation" section="education" />
+          <SectionHeader 
+            icon={GraduationCap} 
+            title="Formation" 
+            section="education"
+            count={profile.education?.length || 0}
+          />
           {expandedSections.education && (
             <div className="p-6 space-y-4">
               {profile.education?.map((edu, index) => (
@@ -414,7 +460,7 @@ const ProfilePage = () => {
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Diplôme</Label>
                       <Input
@@ -432,7 +478,7 @@ const ProfilePage = () => {
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Date de début</Label>
                       <Input
@@ -462,7 +508,12 @@ const ProfilePage = () => {
 
         {/* Skills Section */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <SectionHeader icon={Wrench} title="Compétences" section="skills" />
+          <SectionHeader 
+            icon={Wrench} 
+            title="Compétences" 
+            section="skills"
+            count={profile.skills?.length || 0}
+          />
           {expandedSections.skills && (
             <div className="p-6 space-y-4">
               <div className="flex gap-2">
@@ -488,6 +539,9 @@ const ProfilePage = () => {
                     </button>
                   </span>
                 ))}
+                {profile.skills?.length === 0 && (
+                  <p className="text-sm text-slate-500">Ajoutez vos compétences techniques et soft skills</p>
+                )}
               </div>
             </div>
           )}
@@ -495,7 +549,12 @@ const ProfilePage = () => {
 
         {/* Languages Section */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <SectionHeader icon={Globe} title="Langues" section="languages" />
+          <SectionHeader 
+            icon={Globe} 
+            title="Langues" 
+            section="languages"
+            count={profile.languages?.length || 0}
+          />
           {expandedSections.languages && (
             <div className="p-6 space-y-4">
               <div className="flex gap-2">
@@ -503,11 +562,12 @@ const ProfilePage = () => {
                   placeholder="Langue"
                   value={newLanguage.name}
                   onChange={(e) => setNewLanguage(prev => ({ ...prev, name: e.target.value }))}
+                  className="flex-1"
                 />
                 <select
                   value={newLanguage.level}
                   onChange={(e) => setNewLanguage(prev => ({ ...prev, level: e.target.value }))}
-                  className="px-3 py-2 border border-slate-200 rounded-md"
+                  className="px-3 py-2 border border-slate-200 rounded-md text-sm"
                 >
                   <option value="Débutant">Débutant</option>
                   <option value="Intermédiaire">Intermédiaire</option>
@@ -538,12 +598,15 @@ const ProfilePage = () => {
                     </Button>
                   </div>
                 ))}
+                {profile.languages?.length === 0 && (
+                  <p className="text-sm text-slate-500">Ajoutez les langues que vous maîtrisez</p>
+                )}
               </div>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </AppLayout>
   );
 };
 
