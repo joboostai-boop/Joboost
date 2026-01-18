@@ -1,158 +1,175 @@
-# Joboost - Product Requirements Document
+# JoBoost - Product Requirements Document
 
-## Original Problem Statement
-Plateforme SaaS professionnelle d'organisation de recherche d'emploi pour le marché français - "CRM de Carrière" haut de gamme.
+## Overview
+JoBoost est une plateforme SaaS "Production-Ready" pour l'organisation de la recherche d'emploi sur le marché français. L'application est positionnée comme un "CRM de Carrière" haut de gamme, avec une interface rassurante, ultra-organisée et responsive.
 
-## Architecture
-- **Backend**: FastAPI (Python) avec MongoDB
-- **Frontend**: React avec Tailwind CSS, Shadcn UI
-- **Auth**: JWT + Google OAuth (Emergent-managed)
-- **AI**: OpenAI GPT-4o via Emergent LLM key
-- **Payments**: Stripe
-- **External APIs**: France Travail (OAuth2)
+## Target User
+**Ismael Elasri** (eismael.pro@gmail.com), candidat en recherche d'emploi IT à Paris.
 
-## User Personas
-1. **Chercheurs d'emploi français** - Organisation méthodique
-2. **Professionnels en reconversion** - Besoin de CV/lettres adaptés
-3. **Jeunes diplômés** - Premier emploi
+## Tech Stack
+- **Frontend**: React, React Router, Tailwind CSS, Shadcn UI
+- **Backend**: FastAPI, Python
+- **Database**: MongoDB
+- **Authentication**: JWT, Google OAuth (Emergent-managed)
+- **AI**: Emergent LLM Key (GPT-5.2 pour génération CV/Lettres)
+- **Payments**: Stripe (clé test)
+- **Job API**: France Travail (OAuth2)
 
-## Core Requirements (Static)
-- Interface 100% en français
-- Style Notion-like / Linear épuré
-- Mobile-First responsive
-- Mode Focus pour rédaction documents
-- Export PDF côté client
+---
 
-## What's Been Implemented
+## Implemented Features (as of January 18, 2025)
 
-### Phase 1 - MVP (2025-01-11)
-- ✅ Authentication JWT + Google OAuth
-- ✅ Master Profile / CV Builder (wizard multi-étapes)
-- ✅ Job Tracker (Kanban drag-and-drop + vue liste)
-- ✅ Générateur IA CV & Lettres de motivation
-- ✅ Système de paiement Stripe
-- ✅ Export PDF côté client
+### ✅ Phase 1: Architecture de Navigation (COMPLETED)
+Date: January 18, 2025
 
-### Phase 2 - Nouvelles fonctionnalités (2025-01-11)
-- ✅ Candidatures spontanées (France Travail API)
-- ✅ Offres personnalisées (France Travail API + scoring)
-- ✅ 3 Plans (Gratuit/Pro/Ultra) avec crédits séparés
-- ✅ Graphique de progression (Chart.js)
+#### 1.1 Sidebar Navigation Refactorée
+- Ordre logique des items : Dashboard → Offres → Candidatures → Créer CV → Créer Lettre → Documents → Profil → Tarifs → Paramètres
+- Badge "IA" sur les offres personnalisées
+- État actif avec barre bleue à gauche
+- Section utilisateur en bas avec déconnexion
+- Responsive mobile avec menu burger
 
-### Phase 3 - Branding & UX (2026-01-17)
-- ✅ Intégration du logo Joboost partout dans l'app
-  - Header/Navbar (Landing, Dashboard, Auth pages)
-  - Sidebar (Dashboard)
-  - Footer
-  - Pages de paiement (succès/erreur)
-  - Onboarding
-- ✅ Favicon et métadonnées OG pour partage social
-- ✅ Responsive logo sizing (mobile/tablet/desktop)
-- ✅ Nouveau logo JPG remplace PNG
-- ✅ Logo retiré du hero de la landing page (sur demande utilisateur)
-- ✅ Pages d'erreur 404 et 500 avec logo
-- ✅ Loading Screen animé avec logo et spinner
-- ✅ Composant ConfirmModal réutilisable avec logo
+#### 1.2 Routes Unifiées (kebab-case français)
+| Route | Page | Description |
+|-------|------|-------------|
+| `/dashboard` | DashboardPage | Vue d'ensemble |
+| `/offres` | OffresPage | Offres personnalisées |
+| `/candidatures` | CandidaturesPage | Mes candidatures |
+| `/creer-cv` | GenerateCVPage | Créer un CV |
+| `/creer-lettre` | GenerateLetterPage | Créer une lettre |
+| `/documents` | DocumentsPage | Mes documents |
+| `/profil` | ProfilePage | Mon profil |
+| `/tarifs` | PricingPage | Plans & Tarifs |
+| `/parametres` | SettingsPage | Paramètres |
 
-## Prioritized Backlog
+#### 1.3 Redirections Legacy
+- `/profile` → `/profil`
+- `/settings` → `/parametres`
+- `/spontaneous` → `/candidatures`
+- `/generer` → `/creer-cv`
 
-### P0 - Critical
-- [ ] PayPal intégration (alternative paiement)
-- [ ] Vérifier/fixer la persistance de session après rechargement
+### ✅ Phase 2: Dashboard Refactorisé
+- Message d'accueil personnalisé avec heure (Bonjour/Bon après-midi/Bonsoir)
+- Stats cards : Total, À faire, Postulé, Entretien
+- Crédits IA affichés (CV, Lettres, Spontanées)
+- Actions rapides (4 boutons)
+- Preview des offres personnalisées
+- Candidatures récentes
+- Barre de progression du profil
 
-### P1 - High Priority  
-- [ ] LinkedIn OAuth
-- [ ] Notifications email deadlines
-- [ ] Mode Focus amélioré pour rédaction
-- [ ] Flux de réinitialisation de mot de passe
+### ✅ Phase 3: Page Candidatures
+- 4 onglets : Toutes, Spontanées, Réponses à offres, Brouillons
+- Vue Kanban avec drag-and-drop
+- Vue Liste tabulaire
+- Modal d'ajout de candidature
+- Modal de détail avec changement de statut
+- États vides avec CTA
+
+### ✅ Phase 4: Pages Créer CV/Lettre
+- Flow en 2 étapes (Template/Style → Offre)
+- 4 templates CV : Moderne, Classique, Créatif, Tech
+- 4 styles Lettre : Professionnel, Dynamique, Créatif, Concis
+- Affichage des crédits disponibles
+- Modal d'ajout de nouvelle candidature
+
+### ✅ Phase 5: Profile & Settings avec Sidebar
+- ProfilePage avec sidebar intégrée
+- 5 sections collapsibles (Info, Expériences, Formation, Compétences, Langues)
+- Barre de complétion du profil
+- SettingsPage avec sections Compte, Abonnement, Sécurité, Notifications
+
+### ✅ Phase 6: Page Offres Améliorée
+- Header avec icône et compteur
+- Filtres (localisation, contrat, expérience)
+- Vue grille et liste
+- Modal de détail d'offre
+- Score de matching affiché
+
+### ✅ Phase 7: Page Documents
+- 3 onglets : Tous, Mes CV, Mes lettres
+- Vue grille et liste
+- Actions : Télécharger, Dupliquer, Supprimer
+
+---
+
+## Authentication
+- ✅ JWT-based custom auth (email/password)
+- ✅ Emergent-managed Google OAuth
+- ⏳ LinkedIn OAuth (planned)
+
+## Payments
+- ✅ Stripe integration (test key)
+- ⏳ PayPal (planned)
+
+## AI Features
+- ✅ CV Generation with AI (Emergent LLM Key)
+- ✅ Cover Letter Generation with AI
+- ⏳ ATS Score Check (planned)
+
+---
+
+## Backlog / Upcoming Tasks
+
+### P1 - High Priority
+- [ ] Intégrer PayPal comme option de paiement
+- [ ] Implémenter l'authentification OAuth avec LinkedIn
+- [ ] Export PDF du contenu généré par l'IA
 
 ### P2 - Medium Priority
-- [ ] Statistiques avancées
-- [ ] Import CV existant
-- [ ] Partage de profil public
-- [ ] Éditeur de texte riche pour révision IA
+- [ ] Flux de réinitialisation de mot de passe
+- [ ] Configurer CORS proprement côté backend (withCredentials)
+- [ ] Vérifier et corriger la persistance de session au rechargement
+- [ ] Refactoriser server.py en plusieurs routeurs
 
 ### P3 - Low Priority
-- [ ] Protection CSRF renforcée
-- [ ] Authentification à deux facteurs
+- [ ] Renforcement de la sécurité (CSRF)
+- [ ] Onboarding guidé pour nouveaux utilisateurs
+- [ ] Banner RGPD / Gestion des cookies
+- [ ] Pages CGU et Politique de confidentialité
 
-## Files Structure
+---
+
+## Known Issues
+1. **CORS Workaround**: `withCredentials: true` a été supprimé de la config axios pour contourner un problème CORS. Solution propre à implémenter.
+2. **Session Persistence**: À vérifier si l'utilisateur reste connecté après un rechargement de page.
+
+---
+
+## Test Credentials
+- Email: `audituser2@test.com`
+- Password: `TestPass123!`
+
+---
+
+## File Structure
 ```
-/app/backend/
-├── server.py (main API)
-├── lib/
-│   ├── francetravail_oauth.py (France Travail OAuth2)
-│   ├── labonneboite.py (spontaneous search)
-│   └── jobs_api.py (job recommendations)
-└── .env
-
-/app/frontend/src/
-├── pages/
-│   ├── LandingPage.js
-│   ├── LoginPage.js
-│   ├── RegisterPage.js
-│   ├── DashboardPage.js
-│   ├── ProfilePage.js
-│   ├── OnboardingPage.js
-│   ├── PricingPage.js
-│   ├── PaymentSuccessPage.js
-│   ├── GeneratorPage.js
-│   ├── SpontaneousPage.js
-│   ├── SettingsPage.js
-│   ├── NotFoundPage.js (404)
-│   └── ErrorPage.js (500)
-├── components/
-│   ├── ui/ (Shadcn)
-│   ├── Logo.js (Composant Logo réutilisable)
-│   ├── LoadingScreen.js (Loading avec logo animé)
-│   ├── ConfirmModal.js (Modal avec logo)
-│   ├── MarqueeLogos/ (Carrousel partenaires)
-│   ├── OfferCard.js
-│   └── ProgressChart.js
-├── context/AuthContext.js
-└── lib/api.js
-
-/app/frontend/public/
-├── images/logo.jpg (Logo Joboost principal)
-├── favicon.ico
-└── index.html (avec meta OG)
-```
-│   ├── francetravail_oauth.py (France Travail OAuth2)
-│   ├── labonneboite.py (spontaneous search)
-│   └── jobs_api.py (job recommendations)
-└── .env
-
-/app/frontend/src/
-├── pages/ (10 pages)
-├── components/
-│   ├── ui/ (Shadcn)
-│   ├── Logo.js (Composant Logo réutilisable)
-│   ├── MarqueeLogos/ (Carrousel partenaires)
-│   ├── OfferCard.js
-│   └── ProgressChart.js
-├── context/AuthContext.js
-└── lib/api.js
-
-/app/frontend/public/
-├── images/logo.png (Logo Joboost principal)
-├── favicon.ico
-└── index.html (avec meta OG)
-```
-
-## Logo Component Usage
-```jsx
-import Logo from '../components/Logo';
-
-// Sizes: xs (24px), sm (32px), md (40px), lg (50px), xl (80px), 2xl (100px)
-<Logo size="lg" href="/" />           // With link
-<Logo size="md" />                     // Without link
-<Logo size="xl" className="mb-8" />   // With custom class
-```
-
-## Environment Variables
-```
-MONGO_URL, DB_NAME, JWT_SECRET
-EMERGENT_LLM_KEY, STRIPE_API_KEY
-LABONNEBOITE_API_KEY (optional)
-JOOBLE_API_KEY (optional)
+/app/
+├── backend/
+│   ├── lib/
+│   ├── .env
+│   ├── requirements.txt
+│   └── server.py
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── AppLayout.js (NEW)
+│   │   │   ├── Sidebar.js
+│   │   │   ├── Logo.js
+│   │   │   ├── LoadingScreen.js
+│   │   │   ├── ConfirmModal.js
+│   │   │   └── ProgressChart.js
+│   │   ├── pages/
+│   │   │   ├── DashboardPage.js (REFACTORED)
+│   │   │   ├── CandidaturesPage.js (NEW)
+│   │   │   ├── OffresPage.js (REFACTORED)
+│   │   │   ├── GenerateCVPage.js (NEW)
+│   │   │   ├── GenerateLetterPage.js (NEW)
+│   │   │   ├── DocumentsPage.js (NEW)
+│   │   │   ├── ProfilePage.js (REFACTORED)
+│   │   │   ├── SettingsPage.js (REFACTORED)
+│   │   │   └── ...
+│   │   ├── App.js (REFACTORED)
+│   │   └── index.css
+└── memory/
+    └── PRD.md
 ```
