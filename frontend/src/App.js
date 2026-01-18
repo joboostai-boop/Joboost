@@ -11,14 +11,16 @@ import RegisterPage from './pages/RegisterPage';
 import AuthCallback from './pages/AuthCallback';
 import OnboardingPage from './pages/OnboardingPage';
 import DashboardPage from './pages/DashboardPage';
+import CandidaturesPage from './pages/CandidaturesPage';
+import OffresPage from './pages/OffresPage';
 import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
 import PricingPage from './pages/PricingPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
-import SettingsPage from './pages/SettingsPage';
+import GenerateCVPage from './pages/GenerateCVPage';
+import GenerateLetterPage from './pages/GenerateLetterPage';
+import DocumentsPage from './pages/DocumentsPage';
 import GeneratorPage from './pages/GeneratorPage';
-import GeneratePage from './pages/GeneratePage';
-import SpontaneousPageNew from './pages/SpontaneousPageNew';
-import OffresPage from './pages/OffresPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
 
@@ -85,44 +87,12 @@ function AppRouter() {
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/pricing" element={<PricingPage />} />
 
-      {/* Protected Routes */}
-      <Route
-        path="/onboarding"
-        element={
-          <ProtectedRoute>
-            <OnboardingPage />
-          </ProtectedRoute>
-        }
-      />
+      {/* Protected Routes - Main Navigation */}
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute>
             <DashboardPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/settings"
-        element={
-          <ProtectedRoute>
-            <SettingsPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/spontaneous"
-        element={
-          <ProtectedRoute>
-            <SpontaneousPageNew />
           </ProtectedRoute>
         }
       />
@@ -135,10 +105,74 @@ function AppRouter() {
         }
       />
       <Route
-        path="/generer"
+        path="/candidatures"
         element={
           <ProtectedRoute>
-            <GeneratePage />
+            <CandidaturesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/creer-cv"
+        element={
+          <ProtectedRoute>
+            <GenerateCVPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/creer-lettre"
+        element={
+          <ProtectedRoute>
+            <GenerateLetterPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/documents"
+        element={
+          <ProtectedRoute>
+            <DocumentsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profil"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tarifs"
+        element={
+          <ProtectedRoute>
+            <PricingPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/parametres"
+        element={
+          <ProtectedRoute>
+            <SettingsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Legacy routes - Redirect to new routes */}
+      <Route path="/profile" element={<Navigate to="/profil" replace />} />
+      <Route path="/settings" element={<Navigate to="/parametres" replace />} />
+      <Route path="/spontaneous" element={<Navigate to="/candidatures" replace />} />
+      <Route path="/generer" element={<Navigate to="/creer-cv" replace />} />
+
+      {/* Protected Routes - Sub Pages */}
+      <Route
+        path="/onboarding"
+        element={
+          <ProtectedRoute>
+            <OnboardingPage />
           </ProtectedRoute>
         }
       />
@@ -159,7 +193,7 @@ function AppRouter() {
         }
       />
 
-      {/* Fallback - 404 Page */}
+      {/* Error Pages */}
       <Route path="/error" element={<ErrorPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
