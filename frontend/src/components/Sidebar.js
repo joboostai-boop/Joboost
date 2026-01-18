@@ -4,9 +4,10 @@ import Logo from './Logo';
 import { 
   LayoutDashboard, 
   Sparkles, 
+  ClipboardList,
   FileText, 
   Mail, 
-  Send, 
+  FolderOpen,
   User, 
   CreditCard, 
   Settings, 
@@ -16,8 +17,19 @@ import {
 } from 'lucide-react';
 
 /**
- * Sidebar Navigation - JoBoost
- * Navigation principale de l'application
+ * Sidebar Navigation - JoBoost (Audit V2)
+ * Architecture de navigation optimisée selon les standards SaaS
+ * 
+ * ORDRE LOGIQUE :
+ * 1. Dashboard (point d'entrée)
+ * 2. Offres personnalisées (cœur de l'app)
+ * 3. Mes candidatures (suivi unifié)
+ * 4. Créer un CV (outil)
+ * 5. Créer une lettre (outil)
+ * 6. Mes documents (bibliothèque)
+ * 7. Mon profil (compte)
+ * 8. Plans & Tarifs (upsell)
+ * 9. Paramètres (config)
  */
 
 const NAV_ITEMS = [
@@ -25,43 +37,47 @@ const NAV_ITEMS = [
     path: '/dashboard', 
     label: 'Dashboard', 
     icon: LayoutDashboard,
-    description: 'Vue d\'ensemble'
   },
   { 
     path: '/offres', 
     label: 'Offres personnalisées', 
     icon: Sparkles,
-    description: 'Offres matchées par IA'
+    badge: 'IA'
   },
   { 
-    path: '/generer', 
-    label: 'Générer CV & Lettre', 
+    path: '/candidatures', 
+    label: 'Mes candidatures', 
+    icon: ClipboardList,
+  },
+  { 
+    path: '/creer-cv', 
+    label: 'Créer un CV', 
     icon: FileText,
-    description: 'Création de documents IA'
   },
   { 
-    path: '/spontaneous', 
-    label: 'Candidatures spontanées', 
-    icon: Send,
-    description: 'Suivi des candidatures'
+    path: '/creer-lettre', 
+    label: 'Créer une lettre', 
+    icon: Mail,
   },
   { 
-    path: '/profile', 
-    label: 'Mon Profil', 
+    path: '/documents', 
+    label: 'Mes documents', 
+    icon: FolderOpen,
+  },
+  { 
+    path: '/profil', 
+    label: 'Mon profil', 
     icon: User,
-    description: 'Informations personnelles'
   },
   { 
-    path: '/pricing', 
+    path: '/tarifs', 
     label: 'Plans & Tarifs', 
     icon: CreditCard,
-    description: 'Abonnements'
   },
   { 
-    path: '/settings', 
+    path: '/parametres', 
     label: 'Paramètres', 
     icon: Settings,
-    description: 'Configuration'
   },
 ];
 
@@ -69,12 +85,10 @@ const Sidebar = ({ user, onLogout }) => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Fermer la sidebar mobile lors du changement de route
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Fermer avec la touche Escape
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') setMobileOpen(false);
@@ -88,6 +102,13 @@ const Sidebar = ({ user, onLogout }) => {
       return location.pathname === '/dashboard' || location.pathname === '/';
     }
     return location.pathname.startsWith(path);
+  };
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bonjour';
+    if (hour < 18) return 'Bon après-midi';
+    return 'Bonsoir';
   };
 
   return (
@@ -127,7 +148,6 @@ const Sidebar = ({ user, onLogout }) => {
         <div className="flex items-center justify-between p-4 border-b border-slate-100">
           <Logo size="lg" href="/dashboard" />
           
-          {/* Bouton fermer mobile */}
           <button
             onClick={() => setMobileOpen(false)}
             className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
@@ -148,7 +168,7 @@ const Sidebar = ({ user, onLogout }) => {
                 key={item.path}
                 to={item.path}
                 className={`
-                  group relative flex items-center gap-3 px-3 py-3 rounded-lg
+                  group relative flex items-center gap-3 px-3 py-2.5 rounded-lg
                   font-medium text-sm transition-all duration-200
                   ${active 
                     ? 'bg-sky-50 text-sky-700' 
@@ -159,16 +179,16 @@ const Sidebar = ({ user, onLogout }) => {
               >
                 {/* Barre active */}
                 {active && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-sky-500 rounded-r-full" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-sky-500 rounded-r-full" />
                 )}
                 
-                <Icon className={`w-5 h-5 shrink-0 ${active ? 'text-sky-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
+                <Icon className={`w-5 h-5 shrink-0 ${active ? 'text-sky-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
                 <span className="truncate">{item.label}</span>
                 
-                {/* Badge IA pour Offres personnalisées */}
-                {item.path === '/offres' && (
-                  <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold bg-gradient-to-r from-sky-500 to-indigo-500 text-white rounded">
-                    IA
+                {/* Badge IA */}
+                {item.badge && (
+                  <span className="ml-auto px-1.5 py-0.5 text-[10px] font-bold bg-gradient-to-r from-sky-500 to-indigo-500 text-white rounded">
+                    {item.badge}
                   </span>
                 )}
               </Link>
@@ -178,19 +198,16 @@ const Sidebar = ({ user, onLogout }) => {
 
         {/* Section Utilisateur */}
         <div className="border-t border-slate-100 p-4">
-          {/* Info utilisateur */}
-          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer mb-3">
-            {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center shrink-0">
-              <span className="text-sky-700 font-semibold text-sm">
-                {user?.name?.charAt(0)?.toLowerCase() || 'u'}
+          <div className="flex items-center gap-3 p-2 rounded-lg mb-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center shrink-0">
+              <span className="text-white font-semibold text-sm uppercase">
+                {user?.name?.charAt(0) || 'U'}
               </span>
             </div>
             
-            {/* Nom et email */}
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-slate-900 text-sm truncate">
-                {user?.name || 'Utilisateur'}
+                {getGreeting()}, {user?.name?.split(' ')[0] || 'Utilisateur'} 👋
               </p>
               <p className="text-xs text-slate-500 truncate">
                 {user?.email || 'email@example.com'}
@@ -198,7 +215,6 @@ const Sidebar = ({ user, onLogout }) => {
             </div>
           </div>
           
-          {/* Bouton déconnexion */}
           <button
             onClick={onLogout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 text-sm font-medium"
