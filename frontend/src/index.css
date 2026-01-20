@@ -1,25 +1,52 @@
+/* ========================================================================== */
+/*                         JOBOOST - MAIN STYLESHEET                          */
+/*                 Design System basé sur les couleurs du logo                */
+/* ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=JetBrains+Mono:wght@400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================================================== */
+/*                    DESIGN TOKENS - COULEURS DU LOGO JOBOOST               */
+/* ========================================================================== */
+
 @layer base {
     :root {
+        /* ---------------------------------------------------------------------
+         * BRAND COLORS - Extraites du logo JoBoost
+         * Logo: Dégradé noir → bleu-violet profond (#355CCD)
+         * --------------------------------------------------------------------- */
+        
+        /* Couleur primaire du logo (bleu-violet) */
+        --color-brand-50: 234 100% 97%;    /* #EEF2FF */
+        --color-brand-100: 234 100% 94%;   /* #E0E7FF */
+        --color-brand-200: 232 98% 89%;    /* #C7D2FE */
+        --color-brand-300: 230 94% 82%;    /* #A5B4FC */
+        --color-brand-400: 234 89% 74%;    /* #818CF8 */
+        --color-brand-500: 223 60% 51%;    /* #355CCD - COULEUR EXACTE DU LOGO */
+        --color-brand-600: 224 59% 44%;    /* #2D4FB3 */
+        --color-brand-700: 225 60% 37%;    /* #254299 */
+        --color-brand-800: 226 62% 31%;    /* #1D3580 */
+        --color-brand-900: 227 63% 24%;    /* #162866 */
+
+        /* Shadcn UI Variables - Mapped to brand colors */
         --background: 0 0% 100%;
         --foreground: 222 47% 11%;
         --card: 0 0% 100%;
         --card-foreground: 222 47% 11%;
         --popover: 0 0% 100%;
         --popover-foreground: 222 47% 11%;
-        --primary: 222 47% 11%;
+        --primary: 223 60% 51%;            /* Brand-500 */
         --primary-foreground: 0 0% 100%;
-        --secondary: 199 89% 48%;
-        --secondary-foreground: 0 0% 100%;
+        --secondary: 234 100% 97%;         /* Brand-50 */
+        --secondary-foreground: 223 60% 51%;
         --muted: 210 40% 96%;
         --muted-foreground: 215 16% 47%;
-        --accent: 210 40% 96%;
-        --accent-foreground: 222 47% 11%;
+        --accent: 234 100% 97%;            /* Brand-50 */
+        --accent-foreground: 223 60% 51%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
         --success: 160 84% 39%;
@@ -28,7 +55,7 @@
         --warning-foreground: 0 0% 100%;
         --border: 214 32% 91%;
         --input: 214 32% 91%;
-        --ring: 199 89% 48%;
+        --ring: 223 60% 51%;               /* Brand-500 for focus rings */
         --radius: 0.5rem;
     }
 }
@@ -51,6 +78,10 @@
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
+    .font-heading {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
     .font-serif-focus {
         font-family: 'Libre Baskerville', serif;
     }
@@ -58,31 +89,123 @@
     .font-mono {
         font-family: 'JetBrains Mono', monospace;
     }
+
+    /* Focus ring with brand color */
+    *:focus-visible {
+        outline: 2px solid hsl(var(--color-brand-500));
+        outline-offset: 2px;
+    }
+
+    /* Selection with brand color */
+    ::selection {
+        background: hsl(var(--color-brand-100));
+        color: hsl(var(--color-brand-900));
+    }
 }
 
+/* ========================================================================== */
+/*                              BUTTON COMPONENTS                              */
+/* ========================================================================== */
+
 @layer components {
+    /* Primary Button - Couleur exacte du logo JoBoost */
     .btn-primary {
-        @apply bg-slate-900 text-white hover:bg-slate-800 rounded-md px-6 py-2.5 font-medium transition-all active:scale-95;
+        @apply bg-[#355CCD] text-white hover:bg-[#2D4FB3] rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+        @apply active:bg-[#254299] active:scale-[0.98];
+        @apply disabled:bg-slate-300 disabled:cursor-not-allowed disabled:opacity-60;
+        @apply focus-visible:ring-2 focus-visible:ring-[#355CCD] focus-visible:ring-offset-2;
     }
 
+    .btn-primary:hover:not(:disabled) {
+        box-shadow: 0 4px 14px 0 rgba(53, 92, 205, 0.3);
+        transform: translateY(-1px);
+    }
+
+    /* Secondary Button - Outline avec couleur logo */
     .btn-secondary {
-        @apply bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 rounded-md px-6 py-2.5 font-medium transition-all active:scale-95;
+        @apply bg-transparent text-[#355CCD] border-2 border-[#355CCD] hover:bg-[#EEF2FF] rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+        @apply active:bg-[#E0E7FF] active:scale-[0.98];
     }
 
-    .btn-sky {
-        @apply bg-sky-500 text-white hover:bg-sky-600 rounded-md px-6 py-2.5 font-medium transition-all active:scale-95;
+    .btn-secondary:hover {
+        @apply text-[#2D4FB3] border-[#2D4FB3];
     }
+
+    /* Ghost Button */
+    .btn-ghost {
+        @apply bg-transparent text-[#355CCD] hover:bg-[#EEF2FF] rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+        @apply active:bg-[#E0E7FF];
+    }
+
+    /* Accent Button (for special CTAs) */
+    .btn-accent {
+        @apply bg-gradient-to-r from-[#355CCD] to-[#6366F1] text-white rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+        @apply hover:shadow-lg hover:-translate-y-0.5;
+    }
+
+    /* Sky Button (legacy - maps to brand) */
+    .btn-sky {
+        @apply bg-[#355CCD] text-white hover:bg-[#2D4FB3] rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+        @apply active:scale-[0.98];
+    }
+
+    /* Danger Button */
+    .btn-danger {
+        @apply bg-red-500 text-white hover:bg-red-600 rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+        @apply active:bg-red-700 active:scale-[0.98];
+    }
+
+    /* Success Button */
+    .btn-success {
+        @apply bg-emerald-500 text-white hover:bg-emerald-600 rounded-lg px-6 py-2.5 font-semibold transition-all duration-200;
+    }
+
+    /* ========================================================================== */
+    /*                              CARD COMPONENTS                                */
+    /* ========================================================================== */
 
     .card-job {
-        @apply relative flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md hover:border-sky-200 cursor-pointer;
+        @apply relative flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200;
+        @apply hover:shadow-md hover:border-[#A5B4FC] cursor-pointer;
     }
 
-    .input-default {
-        @apply h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    .card-job.selected {
+        @apply border-[#355CCD] bg-[#EEF2FF];
+        box-shadow: 0 0 0 2px rgba(53, 92, 205, 0.1);
     }
+
+    .stat-card {
+        @apply rounded-xl border border-slate-100 bg-white p-6 shadow-sm;
+    }
+
+    /* ========================================================================== */
+    /*                              FORM COMPONENTS                                */
+    /* ========================================================================== */
+
+    .input-default {
+        @apply h-10 w-full rounded-lg border-2 border-slate-200 bg-white px-4 py-2 text-sm;
+        @apply placeholder:text-slate-400;
+        @apply focus:outline-none focus:border-[#355CCD] focus:ring-0;
+        @apply hover:border-slate-300;
+        @apply disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-slate-100;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-default:focus {
+        box-shadow: 0 0 0 3px rgba(53, 92, 205, 0.1);
+    }
+
+    /* ========================================================================== */
+    /*                              BADGE COMPONENTS                               */
+    /* ========================================================================== */
 
     .badge-status {
         @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors;
+    }
+
+    /* Badge avec couleur brand */
+    .badge-brand {
+        @apply bg-[#E0E7FF] text-[#254299] border border-[#C7D2FE];
     }
 
     .badge-todo {
@@ -90,7 +213,7 @@
     }
 
     .badge-applied {
-        @apply bg-blue-50 text-blue-700 border border-blue-200;
+        @apply bg-[#E0E7FF] text-[#254299] border border-[#C7D2FE];
     }
 
     .badge-interview {
@@ -105,32 +228,101 @@
         @apply bg-red-50 text-red-600 border border-red-200;
     }
 
+    /* ========================================================================== */
+    /*                           NAVIGATION COMPONENTS                             */
+    /* ========================================================================== */
+
     .sidebar-link {
-        @apply flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors;
+        @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 transition-all duration-200;
+        @apply hover:bg-[#EEF2FF] hover:text-[#355CCD];
     }
 
     .sidebar-link.active {
-        @apply bg-slate-100 text-slate-900 font-medium;
+        @apply bg-[#EEF2FF] text-[#355CCD] font-semibold;
+        position: relative;
     }
+
+    .sidebar-link.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 70%;
+        background: #355CCD;
+        border-radius: 0 4px 4px 0;
+    }
+
+    /* Tab navigation */
+    .tab-item {
+        @apply px-4 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent transition-all duration-200;
+        @apply hover:text-[#355CCD];
+    }
+
+    .tab-item.active {
+        @apply text-[#355CCD] border-[#355CCD] font-semibold;
+    }
+
+    /* ========================================================================== */
+    /*                              KANBAN STYLES                                  */
+    /* ========================================================================== */
+
+    .kanban-column {
+        @apply flex-shrink-0 w-80 bg-slate-50 rounded-xl p-4 border border-slate-200;
+        min-height: 400px;
+    }
+
+    /* ========================================================================== */
+    /*                              FOCUS MODE                                     */
+    /* ========================================================================== */
 
     .focus-mode-editor {
         @apply min-h-[60vh] p-8 font-serif-focus text-lg leading-relaxed bg-white border-none focus:outline-none focus:ring-0;
     }
 
-    .kanban-column {
-        @apply flex-shrink-0 w-80 bg-slate-50 rounded-xl p-4;
+    .focus-mode {
+        @apply bg-white min-h-screen;
     }
 
-    .stat-card {
-        @apply rounded-xl border border-slate-100 bg-white p-6 shadow-sm;
+    .focus-mode .focus-content {
+        @apply max-w-3xl mx-auto py-16 px-8;
     }
 }
+
+/* ========================================================================== */
+/*                              UTILITY CLASSES                                */
+/* ========================================================================== */
 
 @layer utilities {
     .text-balance {
         text-wrap: balance;
     }
 
+    /* Brand text colors */
+    .text-brand {
+        color: #355CCD;
+    }
+
+    .text-brand-dark {
+        color: #254299;
+    }
+
+    /* Brand background colors */
+    .bg-brand {
+        background-color: #355CCD;
+    }
+
+    .bg-brand-light {
+        background-color: #EEF2FF;
+    }
+
+    /* Brand gradient */
+    .gradient-brand {
+        background: linear-gradient(135deg, #355CCD 0%, #6366F1 100%);
+    }
+
+    /* Animations */
     .animate-fade-in {
         animation: fadeIn 0.3s ease-out;
     }
@@ -160,31 +352,106 @@
     }
 }
 
-/* Scrollbar styling */
+/* ========================================================================== */
+/*                           SCROLLBAR STYLING                                 */
+/* ========================================================================== */
+
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
     background: #f1f5f9;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #A5B4FC; /* Brand-300 */
 }
 
-/* Focus mode overrides */
-.focus-mode {
-    @apply bg-white min-h-screen;
+/* ========================================================================== */
+/*                        SHADCN COMPONENT OVERRIDES                           */
+/* ========================================================================== */
+
+/* Override shadcn button to use brand colors */
+.shadcn-btn-primary,
+[data-shadcn-button="primary"] {
+    background-color: #355CCD !important;
 }
 
-.focus-mode .focus-content {
-    @apply max-w-3xl mx-auto py-16 px-8;
+[data-shadcn-button="primary"]:hover {
+    background-color: #2D4FB3 !important;
+}
+
+/* Override focus ring colors */
+[data-focus-ring="true"]:focus-visible {
+    --tw-ring-color: #355CCD !important;
+}
+
+/* ========================================================================== */
+/*                         ACCESSIBILITY ENHANCEMENTS                          */
+/* ========================================================================== */
+
+/* Ensure sufficient contrast ratios */
+.high-contrast {
+    color: #162866; /* Brand-900 for high contrast text */
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .btn-primary {
+        border: 2px solid #162866;
+    }
+    
+    .btn-secondary {
+        border-width: 3px;
+    }
+}
+
+/* ========================================================================== */
+/*                      SPECIAL ELEMENTS - LOGO GRADIENT                       */
+/* ========================================================================== */
+
+/* Gradient text effect matching logo */
+.text-gradient-brand {
+    background: linear-gradient(90deg, #000000 0%, #355CCD 50%, #6366F1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Hero gradient background */
+.hero-gradient {
+    background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 50%, #C7D2FE 100%);
+}
+
+/* CTA gradient button */
+.btn-gradient {
+    background: linear-gradient(135deg, #355CCD 0%, #4F46E5 50%, #6366F1 100%);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #2D4FB3 0%, #4338CA 50%, #4F46E5 100%);
+    box-shadow: 0 8px 24px rgba(53, 92, 205, 0.35);
+    transform: translateY(-2px);
 }
