@@ -55,9 +55,22 @@ module.exports = {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
-                // Joboost specific colors
+                // JoBoost Brand Colors (extracted from logo)
+                brand: {
+                    50: '#EEF2FF',
+                    100: '#E0E7FF',
+                    200: '#C7D2FE',
+                    300: '#A5B4FC',
+                    400: '#818CF8',
+                    500: '#355CCD',  // Couleur exacte du logo
+                    600: '#2D4FB3',
+                    700: '#254299',
+                    800: '#1D3580',
+                    900: '#162866',
+                },
+                // Legacy colors
                 midnight: '#0F172A',
-                ocean: '#0EA5E9',
+                ocean: '#355CCD',  // Mapped to brand
                 forest: '#059669',
                 burnt: '#D97706',
                 surface: '#F8FAFC',
